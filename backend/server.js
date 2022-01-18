@@ -52,23 +52,29 @@ app.get("/", (req, res) => {
 	res.send(listEndpoints(app));
 });
 
+/************************** GET **************************/
+
 app.get("/tasks", async (req, res) => {
 	const tasks = await Task.find().sort({ createdAt: "desc" }).limit(20);
 	res.status(200).json({ response: tasks, success: true });
 });
 
+/************************** POST **************************/
+
 app.post("/tasks", async (req, res) => {
-	const { message } = req.body;
+	const { taskname } = req.body;
 
 	try {
-		const newTask = await new Task({ message }).save();
+		const newTask = await new Task({ taskname }).save();
 		res.status(201).json({ response: newTask, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
 	}
 });
 
-app.post("/tasks/:id/isCompleted", async (req, res) => {
+/************************** PATCH **************************/
+
+app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	const { id } = req.params;
 
 	try {
@@ -81,24 +87,9 @@ app.post("/tasks/:id/isCompleted", async (req, res) => {
 	}
 });
 
-app.delete("/tasks/:id", async (req, res) => {
-	const { id } = req.params;
-
-	try {
-		const deletedTask = await Task.findOneAndDelete({ _id: id });
-		if (deletedTask) {
-			res.status(200).json({ response: deletedTask, success: true });
-		} else {
-			res.status(404).json({ response: "Task not found", success: false });
-		}
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-});
-
 app.patch("/tasks/:id", async (req, res) => {
 	const { id } = req.params;
-	const { message } = req.body;
+	const { taskname } = req.body;
 
 	try {
 		const updatedTask = await Task.findOneAndUpdate(
@@ -109,6 +100,23 @@ app.patch("/tasks/:id", async (req, res) => {
 		);
 		if (updatedTask) {
 			res.status(200).json({ response: updatedTask, success: true });
+		} else {
+			res.status(404).json({ response: "Task not found", success: false });
+		}
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+});
+
+/************************** DELETE **************************/
+
+app.delete("/tasks/:id", async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		const deletedTask = await Task.findOneAndDelete({ _id: id });
+		if (deletedTask) {
+			res.status(200).json({ response: deletedTask, success: true });
 		} else {
 			res.status(404).json({ response: "Task not found", success: false });
 		}
