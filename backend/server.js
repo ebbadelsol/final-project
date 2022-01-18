@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 // import crypto from 'crypto';
 import listEndpoints from "express-list-endpoints";
 
-const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/authAPI";
+const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/taskAPI";
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = Promise;
 
@@ -21,14 +21,14 @@ const TaskSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 5,
-		maxlength: 140,
+		maxlength: 25,
 		trim: true,
 		// unique: true,
 	},
 	description: {
 		type: String,
 		minlength: 5,
-		maxlength: 10,
+		maxlength: 150,
 		trim: true, // trim checks if there is whitespaces in the beginning or end of the string and removes it
 	},
 	completed: {
@@ -36,7 +36,7 @@ const TaskSchema = new mongoose.Schema({
 		default: false,
 	},
 	createdAt: {
-		type: Number,
+		type: Date,
 		default: Date.now,
 	},
 });
@@ -55,17 +55,21 @@ app.get("/", (req, res) => {
 /************************** GET **************************/
 
 app.get("/tasks", async (req, res) => {
-	const tasks = await Task.find().sort({ createdAt: "desc" }).limit(20);
-	res.status(200).json({ response: tasks, success: true });
+	try {
+		const tasks = await Task.find().sort({ createdAt: "desc" }).limit(20); // Change limit // Change desc
+		res.status(200).json({ response: tasks, success: true });
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
 });
 
 /************************** POST **************************/
 
 app.post("/tasks", async (req, res) => {
-	const { taskname } = req.body;
+	const { taskname, description } = req.body;
 
 	try {
-		const newTask = await new Task({ taskname }).save();
+		const newTask = await new Task({ taskname, description }).save();
 		res.status(201).json({ response: newTask, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
@@ -78,9 +82,13 @@ app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		const updatedTask = await Task.findByIdAndUpdate(id, {
-			completed: true,
-		});
+		const updatedTask = await Task.findByIdAndUpdate(
+			id,
+			{
+				completed: true, // Why can't I toggle with false ? true : false
+			},
+			{ new: true }
+		);
 		res.status(200).json({ response: updatedTask, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
@@ -89,13 +97,12 @@ app.patch("/tasks/:id/isCompleted", async (req, res) => {
 
 app.patch("/tasks/:id", async (req, res) => {
 	const { id } = req.params;
-	const { taskname } = req.body;
+	const { taskname, description } = req.body;
 
 	try {
 		const updatedTask = await Task.findOneAndUpdate(
 			{ _id: id },
-			{ taskname },
-			{ description },
+			{ taskname, description }, // I need to change both otherwise one will be set to null
 			{ new: true }
 		);
 		if (updatedTask) {
