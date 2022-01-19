@@ -29,7 +29,7 @@ const TaskSchema = new mongoose.Schema({
 		type: String,
 		minlength: 5,
 		maxlength: 150,
-		trim: true, // trim checks if there is whitespaces in the beginning or end of the string and removes it
+		trim: true,
 	},
 	completed: {
 		type: Boolean,
@@ -95,16 +95,13 @@ app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	}
 });
 
+// PATCH: Updating taskname or description or both
 app.patch("/tasks/:id", async (req, res) => {
 	const { id } = req.params;
-	const { taskname, description } = req.body;
-
 	try {
-		const updatedTask = await Task.findOneAndUpdate(
-			{ _id: id },
-			{ taskname, description }, // I need to change both otherwise one will be set to null
-			{ new: true }
-		);
+		const updatedTask = await Task.findOneAndUpdate({ _id: id }, req.body, {
+			new: true,
+		});
 		if (updatedTask) {
 			res.status(200).json({ response: updatedTask, success: true });
 		} else {
