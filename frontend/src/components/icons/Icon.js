@@ -1,4 +1,4 @@
-import Close from "./icons/Close";
+import { Close } from "./Close";
 
 export const Icon = {
 	Close,

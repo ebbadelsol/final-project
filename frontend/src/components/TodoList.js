@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { todos } from "../reducers/todos";
-// import { Icon } from "./icons/Icon";
+import { API_URL } from "../utils/urls";
+
+import { Icon } from "./icons/Icon";
 
 const ListContainer = styled.section`
 	margin-bottom: 110px;
@@ -53,9 +55,30 @@ const DeleteButton = styled.button`
 `;
 
 export const TodoList = () => {
-	const items = useSelector((store) => store.todos.items);
+	const taskItems = useSelector((store) => store.todos.items);
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const options = {
+			method: "GET",
+			// headers: {
+			// 	Authorization: accessToken,
+			// },
+		};
+
+		fetch(API_URL, options)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					dispatch(todos.actions.setItems(data.response));
+					dispatch(todos.actions.setError(null));
+				} else {
+					dispatch(todos.actions.setItems([]));
+					dispatch(todos.actions.setError(data.response));
+				}
+			});
+	}, [/*accessToken,*/ dispatch]);
 
 	const onToggleTodo = (id) => {
 		dispatch(todos.actions.toggleTodo(id));
@@ -67,13 +90,14 @@ export const TodoList = () => {
 
 	return (
 		<ListContainer>
-			{items.map((item) => (
+			{taskItems.map((item) => (
 				<Wrapper key={item.id}>
 					<Checkbox
 						type="checkbox"
 						name={item.id}
 						id={item.id}
-						value={item.text}
+						// value={item.text}
+						value={item.taskname}
 						checked={item.isComplete}
 						onChange={() => onToggleTodo(item.id)}
 					/>
@@ -85,7 +109,7 @@ export const TodoList = () => {
 						aria-label="delete"
 						onClick={() => onDeleteTodo(item.id)}
 					>
-						{/* <Icon.Close /> */}
+						<Icon.Close />
 					</DeleteButton>
 				</Wrapper>
 			))}

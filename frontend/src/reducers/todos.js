@@ -7,6 +7,10 @@ export const todos = createSlice({
 		items: [],
 	},
 	reducers: {
+		setItems: (store, action) => {
+			store.items = action.payload;
+		},
+
 		addTodo: (store, action) => {
 			const newTodo = {
 				id: uniqid(),
