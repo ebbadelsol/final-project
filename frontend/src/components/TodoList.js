@@ -91,23 +91,22 @@ export const TodoList = () => {
 	return (
 		<ListContainer>
 			{taskItems.map((item) => (
-				<Wrapper key={item.id}>
+				<Wrapper key={item._id}>
 					<Checkbox
 						type="checkbox"
-						name={item.id}
-						id={item.id}
-						// value={item.text}
+						name={item._id}
+						id={item._id}
 						value={item.taskname}
 						checked={item.isComplete}
-						onChange={() => onToggleTodo(item.id)}
+						onChange={() => onToggleTodo(item._id)}
 					/>
-					<TaskName htmlFor={item.id} completed={item.isComplete}>
-						{item.text}
-						<Date> Created {dayjs(item.creationDate).format("DD MMM")}</Date>
+					<TaskName htmlFor={item._id} completed={item.completed}>
+						{item.taskname}
+						<Date> Created {dayjs(item.createdAt).format("DD MMM")}</Date>
 					</TaskName>
 					<DeleteButton
 						aria-label="delete"
-						onClick={() => onDeleteTodo(item.id)}
+						onClick={() => onDeleteTodo(item._id)}
 					>
 						<Icon.Close />
 					</DeleteButton>

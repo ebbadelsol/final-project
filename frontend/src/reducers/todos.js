@@ -10,6 +10,9 @@ export const todos = createSlice({
 		setItems: (store, action) => {
 			store.items = action.payload;
 		},
+		setError: (store, action) => {
+			store.error = action.payload;
+		},
 
 		addTodo: (store, action) => {
 			const newTodo = {
