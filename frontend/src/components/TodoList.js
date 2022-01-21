@@ -72,7 +72,6 @@ export const TodoList = () => {
 					dispatch(todos.actions.setItems(data.response));
 					dispatch(todos.actions.setError(null));
 				} else {
-					dispatch(todos.actions.setItems([]));
 					dispatch(todos.actions.setError(data.response));
 				}
 			});
