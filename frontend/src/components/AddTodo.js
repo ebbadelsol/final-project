@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { todos } from "../reducers/todos";
 import styled from "styled-components";
+
+import { todos } from "../reducers/todos";
+import { API_URL } from "../utils/urls";
 
 const AddTodoSection = styled.div`
 	display: grid;
@@ -60,8 +62,27 @@ export const AddTodo = () => {
 	const dispatch = useDispatch();
 
 	const onAddTodo = () => {
-		dispatch(todos.actions.addTodo(input));
-		setInput(""); // Clears textinput
+		const options = {
+			method: "POST",
+			body: JSON.stringify({ taskname: input }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+
+		fetch(API_URL, options)
+			.then((res) => res.json())
+			.then((data) => {
+				console.log("My data:", data);
+				console.log("My input:", input);
+				if (data.success) {
+					dispatch(todos.actions.setItems(data.response));
+					dispatch(todos.actions.setError(null));
+				} else {
+					dispatch(todos.actions.setItems([]));
+					dispatch(todos.actions.setError(data.response));
+				}
+			});
 	};
 
 	const onEnter = (event) => {
@@ -74,7 +95,7 @@ export const AddTodo = () => {
 		<AddTodoSection>
 			<TextInput
 				type="text"
-				value={input}
+				value={input.taskname}
 				placeholder="Add a new task"
 				onKeyDown={onEnter}
 				onChange={(event) => setInput(event.target.value)}

@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { todos } from "../reducers/todos";
-import { API_URL } from "../utils/urls";
 
+import { todos } from "../reducers/todos";
+import { API_URL, URL_ID } from "../utils/urls";
 import { Icon } from "./icons/Icon";
 
 const ListContainer = styled.section`
@@ -52,6 +52,7 @@ const DeleteButton = styled.button`
 	background-color: #ffffff;
 	position: relative;
 	top: 5px;
+	cursor: pointer;
 `;
 
 export const TodoList = () => {
@@ -62,9 +63,6 @@ export const TodoList = () => {
 	useEffect(() => {
 		const options = {
 			method: "GET",
-			// headers: {
-			// 	Authorization: accessToken,
-			// },
 		};
 
 		fetch(API_URL, options)
@@ -78,15 +76,29 @@ export const TodoList = () => {
 					dispatch(todos.actions.setError(data.response));
 				}
 			});
-	}, [/*accessToken,*/ dispatch]);
+	}, [dispatch]);
 
-	const onToggleTodo = (id) => {
-		dispatch(todos.actions.toggleTodo(id));
+	const onDeleteTask = (id) => {
+		const options = {
+			method: "DELETE",
+		};
+
+		fetch(URL_ID(id), options)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					dispatch(todos.actions.setItems(data.response));
+					dispatch(todos.actions.setError(null));
+				} else {
+					dispatch(todos.actions.setItems([]));
+					dispatch(todos.actions.setError(data.response));
+				}
+			});
 	};
 
-	const onDeleteTodo = (id) => {
-		dispatch(todos.actions.deleteTodo(id));
-	};
+	// const onToggleTodo = (id) => {
+	// 	dispatch(todos.actions.toggleTodo(id));
+	// };
 
 	return (
 		<ListContainer>
@@ -98,7 +110,7 @@ export const TodoList = () => {
 						id={item._id}
 						value={item.taskname}
 						checked={item.isComplete}
-						onChange={() => onToggleTodo(item._id)}
+						// onChange={() => onToggleTodo(item._id)}
 					/>
 					<TaskName htmlFor={item._id} completed={item.completed}>
 						{item.taskname}
@@ -106,7 +118,7 @@ export const TodoList = () => {
 					</TaskName>
 					<DeleteButton
 						aria-label="delete"
-						onClick={() => onDeleteTodo(item._id)}
+						onClick={() => onDeleteTask(item._id)}
 					>
 						<Icon.Close />
 					</DeleteButton>
