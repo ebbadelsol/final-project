@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React from "react";
 
-export const Close = ({ color = "#1a1f18", ...rest }) => {
+export const Close = ({ color = "#222221", ...rest }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

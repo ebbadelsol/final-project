@@ -4,17 +4,17 @@ import { todos } from "../reducers/todos";
 import styled from "styled-components";
 
 const CompleteAllButton = styled.button`
-	background-color: #60c57f;
-	color: #ffffff;
+	background-color: var(--primaryColor);
+	color: var(--white);
 	padding: 4px 8px;
-	border: solid 2px #ffffff;
+	border: solid 2px var(--white);
 	border-radius: 100px;
 	font-size: 12px;
 	font-weight: 700;
 	text-transform: uppercase;
 	&:hover {
-		background-color: #ffffff;
-		color: #60c57f;
+		background-color: var(--white);
+		color: var(--primaryColor);
 	}
 `;
 
