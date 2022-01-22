@@ -4,7 +4,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 
 import { todos } from "../reducers/todos";
-import { API_URL, URL_ID } from "../utils/urls";
+import { TASK_URL, TASK_ID_URL } from "../utils/urls";
 import { Icon } from "./icons/Icon";
 
 const ListContainer = styled.section`
@@ -65,7 +65,7 @@ export const TodoList = () => {
 			method: "GET",
 		};
 
-		fetch(API_URL, options)
+		fetch(TASK_URL, options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -82,7 +82,7 @@ export const TodoList = () => {
 			method: "DELETE",
 		};
 
-		fetch(URL_ID(id), options)
+		fetch(TASK_ID_URL(id), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { todos } from "../reducers/todos";
-import { API_URL } from "../utils/urls";
+import { TASK_URL } from "../utils/urls";
 
 const AddTodoSection = styled.div`
 	display: grid;
@@ -70,7 +70,7 @@ export const AddTodo = () => {
 			},
 		};
 
-		fetch(API_URL, options)
+		fetch(TASK_URL, options)
 			.then((res) => res.json())
 			.then((data) => {
 				console.log("My data:", data);
