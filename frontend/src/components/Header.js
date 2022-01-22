@@ -5,9 +5,9 @@ import { Counter } from "./Counter";
 import { CompleteButton } from "./CompleteButton";
 
 const HeaderSection = styled.header`
-	background-color: #60c57f;
+	background-color: var(--primaryColor);
 	padding: 30px 20px;
-	color: #ffffff;
+	color: var(--white);
 
 	@media (min-width: 700px) {
 		padding: 60px 15vw;

@@ -15,10 +15,10 @@ const Wrapper = styled.div`
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
-	background-color: #ffffff;
+	background-color: var(--white);
 	margin: 7px 0;
 	border-radius: 5px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--greyLight);
 	min-height: 60px;
 	padding: 15px;
 `;
@@ -40,16 +40,16 @@ const TaskName = styled.label`
 
 const Date = styled.span`
 	font-size: 11px;
-	color: #b0b0b0;
+	color: var(--grey);
 	line-height: 12px;
 `;
 
 const DeleteButton = styled.button`
 	display: flex;
 	justify-content: center;
-	border: solid 1px #b0b0b0;
+	border: solid 1px var(--grey);
 	border-radius: 50%;
-	background-color: #ffffff;
+	background-color: var(--white);
 	position: relative;
 	top: 5px;
 	cursor: pointer;

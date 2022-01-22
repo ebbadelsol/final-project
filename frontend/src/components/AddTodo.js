@@ -12,7 +12,7 @@ const AddTodoSection = styled.div`
 	bottom: 0px;
 	right: 0px;
 	left: 0px;
-	background-color: #fcfcff;
+	background-color: var(--greyLightest);
 	padding: 20px 20px 30px 20px;
 
 	@media (min-width: 700px) {
@@ -31,7 +31,7 @@ const TextInput = styled.input`
 	font-size: 16px;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--greyLight);
 	border-right: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -40,17 +40,17 @@ const TextInput = styled.input`
 		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;
 	::placeholder {
-		color: #b0b0b0;
+		color: var(--grey);
 	}
 `;
 
 const AddTaskButton = styled.button`
 	height: 60px;
-	background-color: #60c57f;
+	background-color: var(--primaryColor);
 	border: none;
 	font-weight: 600;
 	font-size: 16px;
-	color: #ffffff;
+	color: var(--white);
 	border-top-right-radius: 6px;
 	border-bottom-right-radius: 6px;
 	grid-column: span 1;
