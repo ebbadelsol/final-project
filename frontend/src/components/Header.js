@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-// import { Counter } from "./Counter";
+import { Counter } from "./Counter";
 import { CompleteButton } from "./CompleteButton";
 
 const HeaderSection = styled.header`
@@ -35,7 +35,7 @@ export const Header = () => {
 				<Heading>To do list</Heading>
 				<CompleteButton />
 			</FlexContainer>
-			{/* <Counter /> */}
+			<Counter />
 		</HeaderSection>
 	);
 };

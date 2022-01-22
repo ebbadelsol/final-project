@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 export const Counter = () => {
 	const todosAmount = useSelector((store) => store.todos.items.length);
 	const completedAmount = useSelector(
-		(store) => store.todos.items.filter((item) => item.isComplete).length
+		(store) => store.todos.items.filter((item) => item.completed).length
 	);
 
 	return (
