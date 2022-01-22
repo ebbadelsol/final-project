@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { todos } from "../reducers/todos";
 import { TASK_URL, TASK_ID_URL } from "../utils/urls";
 import { Icon } from "./icons/Icon";
+import { Color } from "./colors/Color";
 
 const ListContainer = styled.section`
 	margin-bottom: 110px;
@@ -52,6 +53,7 @@ const DeleteButton = styled.button`
 	background-color: var(--white);
 	position: relative;
 	top: 5px;
+	padding: 3px;
 	cursor: pointer;
 `;
 
@@ -119,7 +121,7 @@ export const TodoList = () => {
 						aria-label="delete"
 						onClick={() => onDeleteTask(item._id)}
 					>
-						<Icon.Close />
+						<Icon.Close color={Color.GREY} />
 					</DeleteButton>
 				</Wrapper>
 			))}
