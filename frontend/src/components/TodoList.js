@@ -36,7 +36,7 @@ const TaskName = styled.label`
 	margin-right: 10px;
 	display: flex;
 	flex-direction: column;
-	color: ${(props) => (props.completed ? `#b0b0b0` : `#222221`)};
+	color: ${(props) => (props.completed ? Color.GREY : Color.BLACK)};
 `;
 
 const Date = styled.span`
