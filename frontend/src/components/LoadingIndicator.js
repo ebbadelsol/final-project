@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 export const LoadingIndicator = () => {
-	const isLoading = useSelector((state) => state.ui.isLoading);
+	const loading = useSelector((state) => state.ui.loading);
 
-	return <>{isLoading && <div>!! Loading !!</div>}</>;
+	return <>{loading && <div>!! Loading !!</div>}</>;
 };

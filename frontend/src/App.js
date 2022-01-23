@@ -13,9 +13,11 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Tasks } from "./pages/Tasks";
+import { ui } from "./reducers/ui";
 
 const reducer = combineReducers({
 	todos: todos.reducer,
+	ui: ui.reducer,
 });
 
 const store = configureStore({ reducer });

@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
-import { todos } from "../reducers/todos";
-import { TASK_URL, TASK_ID_URL, TASK_ID_COMPLETE_URL } from "../utils/urls";
+import { todos, showTasks } from "../reducers/todos";
+import { TASK_ID_URL, TASK_ID_COMPLETE_URL } from "../utils/urls";
+
+import { LoadingIndicator } from "./LoadingIndicator";
 import { Icon } from "./icons/Icon";
 import { Color } from "./colors/Color";
 
@@ -61,23 +63,11 @@ const DeleteButton = styled.button`
 
 export const TaskList = () => {
 	const taskItems = useSelector((store) => store.todos.items);
-
+	const loading = useSelector((state) => state.ui.loading);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const options = {
-			method: "GET",
-		};
-		fetch(TASK_URL, options)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
-					dispatch(todos.actions.setError(null));
-				} else {
-					dispatch(todos.actions.setError(data.response));
-				}
-			});
+		dispatch(showTasks());
 	}, [dispatch]);
 
 	const onDeleteTask = (id) => {
@@ -118,29 +108,34 @@ export const TaskList = () => {
 	};
 
 	return (
-		<ListContainer>
-			{taskItems.map((item) => (
-				<Wrapper key={item._id}>
-					<Checkbox
-						type="checkbox"
-						name={item._id}
-						id={item._id}
-						value={item.taskName}
-						checked={item.isCompleted}
-						onChange={() => onToggleTask(item._id, item.isCompleted)}
-					/>
-					<TaskName htmlFor={item._id} isCompleted={item.isCompleted}>
-						{item.taskName}
-						<Date> Created {dayjs(item.createdAt).format("DD MMM")}</Date>
-					</TaskName>
-					<DeleteButton
-						aria-label="delete"
-						onClick={() => onDeleteTask(item._id)}
-					>
-						<Icon.Close color={Color.GREY} />
-					</DeleteButton>
-				</Wrapper>
-			))}
-		</ListContainer>
+		<>
+			<LoadingIndicator />
+			{!loading && (
+				<ListContainer>
+					{taskItems.map((item) => (
+						<Wrapper key={item._id}>
+							<Checkbox
+								type="checkbox"
+								name={item._id}
+								id={item._id}
+								value={item.taskName}
+								checked={item.isCompleted}
+								onChange={() => onToggleTask(item._id, item.isCompleted)}
+							/>
+							<TaskName htmlFor={item._id} isCompleted={item.isCompleted}>
+								{item.taskName}
+								<Date> Created {dayjs(item.createdAt).format("DD MMM")}</Date>
+							</TaskName>
+							<DeleteButton
+								aria-label="delete"
+								onClick={() => onDeleteTask(item._id)}
+							>
+								<Icon.Close color={Color.GREY} />
+							</DeleteButton>
+						</Wrapper>
+					))}
+				</ListContainer>
+			)}
+		</>
 	);
 };
