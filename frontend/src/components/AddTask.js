@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { todos } from "../reducers/todos";
-import { TASK_URL } from "../utils/urls";
+import { onAddTask } from "../reducers/todos";
 
 const AddTaskSection = styled.div`
 	display: grid;
@@ -61,32 +60,9 @@ export const AddTask = () => {
 
 	const dispatch = useDispatch();
 
-	const onAddTask = () => {
-		const options = {
-			method: "POST",
-			body: JSON.stringify({ taskName: input }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		};
-
-		fetch(TASK_URL, options)
-			.then((res) => res.json())
-			.then((data) => {
-				console.log("My data:", data);
-				console.log("My input:", input);
-				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
-					dispatch(todos.actions.setError(null));
-				} else {
-					dispatch(todos.actions.setError(data.response));
-				}
-			});
-	};
-
 	const onEnter = (event) => {
 		if (event.key === "Enter") {
-			onAddTask();
+			dispatch(onAddTask(input));
 		}
 	};
 
@@ -99,7 +75,9 @@ export const AddTask = () => {
 				onKeyDown={onEnter}
 				onChange={(event) => setInput(event.target.value)}
 			/>
-			<AddTaskButton onClick={onAddTask}>Add</AddTaskButton>
+			<AddTaskButton onClick={() => dispatch(onAddTask(input))}>
+				Add
+			</AddTaskButton>
 		</AddTaskSection>
 	);
 };
