@@ -28,6 +28,7 @@ const Checkbox = styled.input`
 	border-radius: 50%;
 	position: relative;
 	top: 5px;
+	cursor: pointer;
 `;
 
 const TaskName = styled.label`
@@ -37,6 +38,7 @@ const TaskName = styled.label`
 	display: flex;
 	flex-direction: column;
 	color: ${(props) => (props.completed ? Color.GREY : Color.BLACK)};
+	cursor: pointer;
 `;
 
 const Date = styled.span`
