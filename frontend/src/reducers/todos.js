@@ -14,7 +14,7 @@ export const todos = createSlice({
 			store.error = action.payload;
 		},
 
-		// completeAllTodos: (store) => {
+		// completeAllTasks: (store) => {
 		// 	const completeAll = store.items.map((item) => {
 		// 		return {
 		// 			...item,

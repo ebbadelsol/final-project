@@ -21,12 +21,12 @@ const CompleteAllButton = styled.button`
 export const CompleteButton = () => {
 	const dispatch = useDispatch();
 
-	const onCompleteAllTodos = (items) => {
-		dispatch(todos.actions.completeAllTodos(items));
+	const onCompleteAllTasks = (items) => {
+		dispatch(todos.actions.completeAllTasks(items));
 	};
 
 	return (
-		<CompleteAllButton onClick={onCompleteAllTodos}>
+		<CompleteAllButton onClick={onCompleteAllTasks}>
 			Complete all
 		</CompleteAllButton>
 	);

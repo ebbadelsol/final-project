@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { todos } from "../reducers/todos";
 import { TASK_URL } from "../utils/urls";
 
-const AddTodoSection = styled.div`
+const AddTaskSection = styled.div`
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	position: fixed;
@@ -56,12 +56,12 @@ const AddTaskButton = styled.button`
 	grid-column: span 1;
 `;
 
-export const AddTodo = () => {
+export const AddTask = () => {
 	const [input, setInput] = useState("");
 
 	const dispatch = useDispatch();
 
-	const onAddTodo = () => {
+	const onAddTask = () => {
 		const options = {
 			method: "POST",
 			body: JSON.stringify({ taskName: input }),
@@ -86,12 +86,12 @@ export const AddTodo = () => {
 
 	const onEnter = (event) => {
 		if (event.key === "Enter") {
-			onAddTodo();
+			onAddTask();
 		}
 	};
 
 	return (
-		<AddTodoSection>
+		<AddTaskSection>
 			<TextInput
 				type="text"
 				value={input.taskName}
@@ -99,7 +99,7 @@ export const AddTodo = () => {
 				onKeyDown={onEnter}
 				onChange={(event) => setInput(event.target.value)}
 			/>
-			<AddTaskButton onClick={onAddTodo}>Add</AddTaskButton>
-		</AddTodoSection>
+			<AddTaskButton onClick={onAddTask}>Add</AddTaskButton>
+		</AddTaskSection>
 	);
 };

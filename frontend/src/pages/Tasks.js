@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 import { Header } from "../components/Header";
-import { TodoList } from "../components/TodoList";
-import { AddTodo } from "../components/AddTodo";
+import { TaskList } from "../components/TaskList";
+import { AddTask } from "../components/AddTask";
 
 const Container = styled.main`
 	margin: 20px;
@@ -22,8 +22,8 @@ export const Tasks = () => {
 		<>
 			<Header />
 			<Container>
-				<TodoList />
-				<AddTodo />
+				<TaskList />
+				<AddTask />
 			</Container>
 		</>
 	);

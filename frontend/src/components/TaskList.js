@@ -59,7 +59,7 @@ const DeleteButton = styled.button`
 	cursor: pointer;
 `;
 
-export const TodoList = () => {
+export const TaskList = () => {
 	const taskItems = useSelector((store) => store.todos.items);
 
 	const dispatch = useDispatch();
@@ -97,7 +97,7 @@ export const TodoList = () => {
 			});
 	};
 
-	const onToggleTodo = (id, isCompleted) => {
+	const onToggleTask = (id, isCompleted) => {
 		const options = {
 			method: "PATCH",
 			body: JSON.stringify({ isCompleted: !isCompleted ? true : false }),
@@ -127,7 +127,7 @@ export const TodoList = () => {
 						id={item._id}
 						value={item.taskName}
 						checked={item.isCompleted}
-						onChange={() => onToggleTodo(item._id, item.isCompleted)}
+						onChange={() => onToggleTask(item._id, item.isCompleted)}
 					/>
 					<TaskName htmlFor={item._id} isCompleted={item.isCompleted}>
 						{item.taskName}
