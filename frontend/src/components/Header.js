@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import { Counter } from "./Counter";
-import { CompleteButton } from "./CompleteButton";
 
 const HeaderSection = styled.header`
 	background-color: var(--primaryColor);
@@ -18,11 +17,6 @@ const HeaderSection = styled.header`
 	}
 `;
 
-const FlexContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
-`;
-
 const Heading = styled.h1`
 	font-size: 26px;
 	margin-bottom: 5px;
@@ -31,10 +25,7 @@ const Heading = styled.h1`
 export const Header = () => {
 	return (
 		<HeaderSection>
-			<FlexContainer>
-				<Heading>To do list</Heading>
-				<CompleteButton />
-			</FlexContainer>
+			<Heading>To do list</Heading>
 			<Counter />
 		</HeaderSection>
 	);
