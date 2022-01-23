@@ -37,7 +37,7 @@ const TaskName = styled.label`
 	margin-right: 10px;
 	display: flex;
 	flex-direction: column;
-	color: ${(props) => (props.completed ? Color.GREY : Color.BLACK)};
+	color: ${(props) => (props.isCompleted ? Color.GREY : Color.BLACK)};
 	cursor: pointer;
 `;
 
@@ -97,10 +97,10 @@ export const TodoList = () => {
 			});
 	};
 
-	const onToggleTodo = (id, completed) => {
+	const onToggleTodo = (id, isCompleted) => {
 		const options = {
 			method: "PATCH",
-			body: JSON.stringify({ completed: !completed ? true : false }),
+			body: JSON.stringify({ isCompleted: !isCompleted ? true : false }),
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -125,12 +125,12 @@ export const TodoList = () => {
 						type="checkbox"
 						name={item._id}
 						id={item._id}
-						value={item.taskname}
-						checked={item.completed}
-						onChange={() => onToggleTodo(item._id, item.completed)}
+						value={item.taskName}
+						checked={item.isCompleted}
+						onChange={() => onToggleTodo(item._id, item.isCompleted)}
 					/>
-					<TaskName htmlFor={item._id} completed={item.completed}>
-						{item.taskname}
+					<TaskName htmlFor={item._id} isCompleted={item.isCompleted}>
+						{item.taskName}
 						<Date> Created {dayjs(item.createdAt).format("DD MMM")}</Date>
 					</TaskName>
 					<DeleteButton

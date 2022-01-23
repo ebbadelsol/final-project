@@ -17,7 +17,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 const TaskSchema = new mongoose.Schema({
-	taskname: {
+	taskName: {
 		type: String,
 		required: true,
 		minlength: 5,
@@ -31,7 +31,7 @@ const TaskSchema = new mongoose.Schema({
 		maxlength: 150,
 		trim: true,
 	},
-	completed: {
+	isCompleted: {
 		type: Boolean,
 		default: false,
 	},
@@ -66,10 +66,10 @@ app.get("/tasks", async (req, res) => {
 /************************** POST **************************/
 
 app.post("/tasks", async (req, res) => {
-	const { taskname, description } = req.body;
+	const { taskName, description } = req.body;
 
 	try {
-		const newTask = await new Task({ taskname, description }).save();
+		const newTask = await new Task({ taskName, description }).save();
 		res.status(201).json({ response: newTask, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
@@ -80,12 +80,12 @@ app.post("/tasks", async (req, res) => {
 
 app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	const { id } = req.params;
-	const { completed } = req.body;
+	const { isCompleted } = req.body;
 
 	try {
 		const updatedIsCompleted = await Task.findOneAndUpdate(
 			{ _id: id },
-			{ completed },
+			{ isCompleted },
 			{ new: true }
 		);
 		res.status(200).json({ response: updatedIsCompleted, success: true });
@@ -94,7 +94,7 @@ app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	}
 });
 
-// PATCH: Updating taskname or description or both
+// PATCH: Updating taskName or description or both
 app.patch("/tasks/:id", async (req, res) => {
 	const { id } = req.params;
 	try {

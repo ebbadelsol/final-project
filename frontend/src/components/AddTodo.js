@@ -64,7 +64,7 @@ export const AddTodo = () => {
 	const onAddTodo = () => {
 		const options = {
 			method: "POST",
-			body: JSON.stringify({ taskname: input }),
+			body: JSON.stringify({ taskName: input }),
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -94,7 +94,7 @@ export const AddTodo = () => {
 		<AddTodoSection>
 			<TextInput
 				type="text"
-				value={input.taskname}
+				value={input.taskName}
 				placeholder="Add a new task"
 				onKeyDown={onEnter}
 				onChange={(event) => setInput(event.target.value)}
