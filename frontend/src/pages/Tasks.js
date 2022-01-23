@@ -17,7 +17,7 @@ const Container = styled.main`
 	}
 `;
 
-export const Main = () => {
+export const Tasks = () => {
 	return (
 		<>
 			<Header />
