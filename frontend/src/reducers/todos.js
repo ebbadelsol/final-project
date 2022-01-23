@@ -14,21 +14,6 @@ export const todos = createSlice({
 			store.error = action.payload;
 		},
 
-		// toggleTodo: (store, action) => {
-		// 	const updatedItems = store.items.map((item) => {
-		// 		if (item.id === action.payload) {
-		// 			const updatedTodo = {
-		// 				...item,
-		// 				isComplete: !item.isComplete,
-		// 			};
-		// 			return updatedTodo;
-		// 		} else {
-		// 			return item;
-		// 		}
-		// 	});
-		// 	store.items = updatedItems;
-		// },
-
 		// completeAllTodos: (store) => {
 		// 	const completeAll = store.items.map((item) => {
 		// 		return {

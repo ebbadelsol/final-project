@@ -4,7 +4,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 
 import { todos } from "../reducers/todos";
-import { TASK_URL, TASK_ID_URL } from "../utils/urls";
+import { TASK_URL, TASK_ID_URL, TASK_ID_COMPLETE_URL } from "../utils/urls";
 import { Icon } from "./icons/Icon";
 import { Color } from "./colors/Color";
 
@@ -68,7 +68,6 @@ export const TodoList = () => {
 		const options = {
 			method: "GET",
 		};
-
 		fetch(TASK_URL, options)
 			.then((res) => res.json())
 			.then((data) => {
@@ -85,7 +84,6 @@ export const TodoList = () => {
 		const options = {
 			method: "DELETE",
 		};
-
 		fetch(TASK_ID_URL(id), options)
 			.then((res) => res.json())
 			.then((data) => {
@@ -99,9 +97,25 @@ export const TodoList = () => {
 			});
 	};
 
-	// const onToggleTodo = (id) => {
-	// 	dispatch(todos.actions.toggleTodo(id));
-	// };
+	const onToggleTodo = (id, completed) => {
+		const options = {
+			method: "PATCH",
+			body: JSON.stringify({ completed: !completed ? true : false }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		fetch(TASK_ID_COMPLETE_URL(id), options)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					dispatch(todos.actions.setItems(data.response));
+					dispatch(todos.actions.setError(null));
+				} else {
+					dispatch(todos.actions.setError(data.response));
+				}
+			});
+	};
 
 	return (
 		<ListContainer>
@@ -112,8 +126,8 @@ export const TodoList = () => {
 						name={item._id}
 						id={item._id}
 						value={item.taskname}
-						checked={item.isComplete}
-						// onChange={() => onToggleTodo(item._id)}
+						checked={item.completed}
+						onChange={() => onToggleTodo(item._id, item.completed)}
 					/>
 					<TaskName htmlFor={item._id} completed={item.completed}>
 						{item.taskname}

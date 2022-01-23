@@ -80,16 +80,15 @@ app.post("/tasks", async (req, res) => {
 
 app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	const { id } = req.params;
+	const { completed } = req.body;
 
 	try {
-		const updatedTask = await Task.findByIdAndUpdate(
-			id,
-			{
-				completed: true, // Why can't I toggle with false ? true : false
-			},
+		const updatedIsCompleted = await Task.findOneAndUpdate(
+			{ _id: id },
+			{ completed },
 			{ new: true }
 		);
-		res.status(200).json({ response: updatedTask, success: true });
+		res.status(200).json({ response: updatedIsCompleted, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
 	}
