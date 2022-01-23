@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
-import { todos, showTasks } from "../reducers/todos";
-import { TASK_ID_URL, TASK_ID_COMPLETE_URL } from "../utils/urls";
+import { showTasks, onToggleTask, onDeleteTask } from "../reducers/todos";
 
 import { LoadingIndicator } from "./LoadingIndicator";
 import { Icon } from "./icons/Icon";
@@ -70,43 +69,6 @@ export const TaskList = () => {
 		dispatch(showTasks());
 	}, [dispatch]);
 
-	const onDeleteTask = (id) => {
-		const options = {
-			method: "DELETE",
-		};
-		fetch(TASK_ID_URL(id), options)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
-					dispatch(todos.actions.setError(null));
-				} else {
-					dispatch(todos.actions.setItems([]));
-					dispatch(todos.actions.setError(data.response));
-				}
-			});
-	};
-
-	const onToggleTask = (id, isCompleted) => {
-		const options = {
-			method: "PATCH",
-			body: JSON.stringify({ isCompleted: !isCompleted ? true : false }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		};
-		fetch(TASK_ID_COMPLETE_URL(id), options)
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
-					dispatch(todos.actions.setError(null));
-				} else {
-					dispatch(todos.actions.setError(data.response));
-				}
-			});
-	};
-
 	return (
 		<>
 			<LoadingIndicator />
@@ -120,7 +82,9 @@ export const TaskList = () => {
 								id={item._id}
 								value={item.taskName}
 								checked={item.isCompleted}
-								onChange={() => onToggleTask(item._id, item.isCompleted)}
+								onChange={() =>
+									dispatch(onToggleTask(item._id, item.isCompleted))
+								}
 							/>
 							<TaskName htmlFor={item._id} isCompleted={item.isCompleted}>
 								{item.taskName}
@@ -128,7 +92,7 @@ export const TaskList = () => {
 							</TaskName>
 							<DeleteButton
 								aria-label="delete"
-								onClick={() => onDeleteTask(item._id)}
+								onClick={() => dispatch(onDeleteTask(item._id))}
 							>
 								<Icon.Close color={Color.GREY} />
 							</DeleteButton>
