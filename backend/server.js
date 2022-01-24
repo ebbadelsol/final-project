@@ -48,15 +48,15 @@ app.use(cors());
 app.use(express.json());
 
 // Start defining your routes here
-app.get("/", (req, res) => {
+app.get("/", (res) => {
 	res.send(listEndpoints(app));
 });
 
 /************************** GET **************************/
 
-app.get("/tasks", async (req, res) => {
+app.get("/tasks", async (res) => {
 	try {
-		const tasks = await Task.find().sort({ createdAt: "desc" }).limit(20); // Change limit // Change desc
+		const tasks = await Task.find().sort({ createdAt: "desc" });
 		res.status(200).json({ response: tasks, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });

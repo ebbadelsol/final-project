@@ -59,7 +59,7 @@ const showTasksStopLoading = (time) => {
 
 export const onDeleteTask = (id) => {
 	return (dispatch) => {
-		dispatch(ui.actions.setLoading(true));
+		dispatch(ui.actions.setLoading(true)); // Not sure if I want to have loading here
 		const options = {
 			method: "DELETE",
 		};
@@ -73,13 +73,13 @@ export const onDeleteTask = (id) => {
 					dispatch(todos.actions.setError(data.response));
 				}
 			})
-			.finally(() => dispatch(showTasksStopLoading(400)));
+			.finally(() => dispatch(showTasksStopLoading(200)));
 	};
 };
 
 export const onToggleTask = (id, isCompleted) => {
 	return (dispatch) => {
-		dispatch(ui.actions.setLoading(true));
+		dispatch(ui.actions.setLoading(true)); // Not sure if I want to have loading here
 		const options = {
 			method: "PATCH",
 			body: JSON.stringify({ isCompleted: !isCompleted ? true : false }),
