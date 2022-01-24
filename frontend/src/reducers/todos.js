@@ -38,6 +38,25 @@ export const showTasks = () => {
 	};
 };
 
+const showTasksStopLoading = () => {
+	return (dispatch) => {
+		const options = {
+			method: "GET",
+		};
+		fetch(TASK_URL, options)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					dispatch(todos.actions.setItems(data.response));
+					dispatch(todos.actions.setError(null));
+				} else {
+					dispatch(todos.actions.setError(data.response));
+				}
+			})
+			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), 2000));
+	};
+};
+
 export const onDeleteTask = (id) => {
 	return (dispatch) => {
 		dispatch(ui.actions.setLoading(true));
@@ -55,7 +74,7 @@ export const onDeleteTask = (id) => {
 					dispatch(todos.actions.setError(data.response));
 				}
 			})
-			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), 2000));
+			.finally(() => dispatch(showTasksStopLoading()));
 	};
 };
 
@@ -79,7 +98,7 @@ export const onToggleTask = (id, isCompleted) => {
 					dispatch(todos.actions.setError(data.response));
 				}
 			})
-			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), 2000));
+			.finally(() => dispatch(showTasksStopLoading()));
 	};
 };
 
@@ -105,6 +124,6 @@ export const onAddTask = (input) => {
 					dispatch(todos.actions.setError(data.response));
 				}
 			})
-			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), 2000));
+			.finally(() => dispatch(showTasksStopLoading()));
 	};
 };
