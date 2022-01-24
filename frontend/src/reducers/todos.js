@@ -113,8 +113,6 @@ export const onAddTask = (input) => {
 		fetch(TASK_URL, options)
 			.then((res) => res.json())
 			.then((data) => {
-				console.log("My data:", data);
-				console.log("My input:", input);
 				if (data.success) {
 					dispatch(todos.actions.setError(null));
 				} else {

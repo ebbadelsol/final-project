@@ -1,19 +1,21 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
 	combineReducers,
 	configureStore /*createStore*/,
 } from "@reduxjs/toolkit";
 
 import { todos } from "./reducers/todos";
+import { ui } from "./reducers/ui";
+
 import { Account } from "./pages/Account";
 import { Calendar } from "./pages/Calendar";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Tasks } from "./pages/Tasks";
-import { ui } from "./reducers/ui";
+import { NotFound } from "./pages/NotFound";
 
 const reducer = combineReducers({
 	todos: todos.reducer,
@@ -42,7 +44,7 @@ const store = configureStore({ reducer });
 export const App = () => {
 	return (
 		<Provider store={store}>
-			<Router>
+			<BrowserRouter>
 				<Routes>
 					<Route index path="/" element={<Home />} />
 					<Route index path="/log-in" element={<Login />} />
@@ -50,8 +52,9 @@ export const App = () => {
 					<Route index path="/account" element={<Account />} />
 					<Route index path="/tasks" element={<Tasks />} />
 					<Route index path="/calendar" element={<Calendar />} />
+					<Route path="*" element={<NotFound />} />
 				</Routes>
-			</Router>
+			</BrowserRouter>
 		</Provider>
 	);
 };
