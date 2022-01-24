@@ -67,7 +67,6 @@ export const onDeleteTask = (id) => {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setItems([]));
@@ -92,7 +91,6 @@ export const onToggleTask = (id, isCompleted) => {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setError(data.response));
@@ -118,7 +116,6 @@ export const onAddTask = (input) => {
 				console.log("My data:", data);
 				console.log("My input:", input);
 				if (data.success) {
-					dispatch(todos.actions.setItems(data.response));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setError(data.response));
