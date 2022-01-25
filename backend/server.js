@@ -20,16 +20,32 @@ const TaskSchema = new mongoose.Schema({
 	taskName: {
 		type: String,
 		required: true,
-		minlength: 5,
+		minlength: 3,
+		maxlength: 50,
+		trim: true,
+		unique: true,
+	},
+	category: {
+		type: String,
+		minlength: 4,
 		maxlength: 25,
 		trim: true,
-		// unique: true,
+		// enum: [
+		// 	"Home",
+		// 	"Work",
+		// 	"Study",
+		// 	"Travel",
+		// 	"Shopping",
+		// 	"Food",
+		// 	"Music",
+		// 	"Other",
+		// 	"Custom made",
+		// ],
+		default: "Other",
 	},
-	description: {
-		type: String,
-		minlength: 5,
-		maxlength: 150,
-		trim: true,
+	deadline: {
+		type: Date,
+		default: Date.now,
 	},
 	isCompleted: {
 		type: Boolean,
@@ -54,7 +70,7 @@ app.get("/", (res) => {
 
 /************************** GET **************************/
 
-app.get("/tasks", async (res) => {
+app.get("/tasks", async (req, res) => {
 	try {
 		const tasks = await Task.find().sort({ createdAt: "desc" });
 		res.status(200).json({ response: tasks, success: true });
@@ -66,10 +82,10 @@ app.get("/tasks", async (res) => {
 /************************** POST **************************/
 
 app.post("/tasks", async (req, res) => {
-	const { taskName, description } = req.body;
+	const { taskName, category, deadline } = req.body;
 
 	try {
-		const newTask = await new Task({ taskName, description }).save();
+		const newTask = await new Task({ taskName, category, deadline }).save();
 		res.status(201).json({ response: newTask, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
@@ -94,7 +110,7 @@ app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	}
 });
 
-// PATCH: Updating taskName or description or both
+// PATCH: Updating taskName, category or deadline or all
 app.patch("/tasks/:id", async (req, res) => {
 	const { id } = req.params;
 	try {
