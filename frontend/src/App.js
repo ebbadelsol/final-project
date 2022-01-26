@@ -1,10 +1,13 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import thunkMiddleware from "redux-thunk";
 import {
 	combineReducers,
-	configureStore /*createStore*/,
+	/*configureStore,*/ createStore,
+	compose,
+	applyMiddleware,
 } from "@reduxjs/toolkit";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { todos } from "./reducers/todos";
 import { ui } from "./reducers/ui";
@@ -22,24 +25,26 @@ const reducer = combineReducers({
 	ui: ui.reducer,
 });
 
-const store = configureStore({ reducer });
+// const store = configureStore({ reducer });
 
-// const persistedStateJSON = localStorage.getItem("todos");
+const persistedStateJSON = localStorage.getItem("todos");
+const persistedState = persistedStateJSON ? JSON.parse(persistedStateJSON) : {};
 
-// let persistedState = {};
-// if (persistedStateJSON) {
-// 	persistedState = JSON.parse(persistedStateJSON);
-// }
+const composedEnhancers =
+	(process.env.NODE_ENV !== "production" &&
+		typeof window !== "undefined" &&
+		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+	compose;
 
-// const store = createStore(
-// 	reducer,
-// 	persistedState,
-// 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
+const store = createStore(
+	reducer,
+	persistedState,
+	composedEnhancers(applyMiddleware(thunkMiddleware))
+);
 
-// store.subscribe(() => {
-// 	localStorage.setItem("todos", JSON.stringify(store.getState()));
-// });
+store.subscribe(() => {
+	localStorage.setItem("todos", JSON.stringify(store.getState()));
+});
 
 export const App = () => {
 	return (
