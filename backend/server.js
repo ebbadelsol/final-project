@@ -21,27 +21,13 @@ const TaskSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		minlength: 3,
-		maxlength: 50,
+		maxlength: 40,
 		trim: true,
 		unique: true,
 	},
 	category: {
-		type: String,
-		minlength: 4,
-		maxlength: 25,
-		trim: true,
-		// enum: [
-		// 	"Home",
-		// 	"Work",
-		// 	"Study",
-		// 	"Travel",
-		// 	"Shopping",
-		// 	"Food",
-		// 	"Music",
-		// 	"Other",
-		// 	"Custom made",
-		// ],
-		default: "Other",
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Category",
 	},
 	deadline: {
 		type: Date,
@@ -57,7 +43,20 @@ const TaskSchema = new mongoose.Schema({
 	},
 });
 
+const CategorySchema = new mongoose.Schema({
+	categoryName: {
+		type: String,
+		required: true,
+		minlength: 3,
+		maxlength: 40,
+		trim: true,
+		unique: true,
+	},
+});
+
 const Task = mongoose.model("Task", TaskSchema);
+
+const Category = mongoose.model("Category", CategorySchema);
 
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
@@ -79,13 +78,39 @@ app.get("/tasks", async (req, res) => {
 	}
 });
 
+app.get("/tasks/:categoryId", async (req, res) => {
+	const { categoryId } = req.params;
+	try {
+		const tasks = await Task.findById(categoryId).populate("category");
+		res.status(200).json({ response: tasks, success: true });
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+});
+
 /************************** POST **************************/
 
-app.post("/tasks", async (req, res) => {
-	const { taskName, category, deadline } = req.body;
+app.post("/category", async (req, res) => {
+	const { categoryName } = req.body;
 
 	try {
-		const newTask = await new Task({ taskName, category, deadline }).save();
+		const newCategory = await new Category({ categoryName }).save();
+		res.status(201).json({ response: newCategory, success: true });
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+});
+
+app.post("/tasks", async (req, res) => {
+	const { taskName, categoryId, deadline } = req.body;
+
+	try {
+		const queriedCategory = await Category.findById(categoryId);
+		const newTask = await new Task({
+			taskName,
+			category: queriedCategory,
+			deadline,
+		}).save();
 		res.status(201).json({ response: newTask, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
@@ -94,13 +119,13 @@ app.post("/tasks", async (req, res) => {
 
 /************************** PATCH **************************/
 
-app.patch("/tasks/:id/isCompleted", async (req, res) => {
-	const { id } = req.params;
+app.patch("/tasks/:taskId/isCompleted", async (req, res) => {
+	const { taskId } = req.params;
 	const { isCompleted } = req.body;
 
 	try {
 		const updatedIsCompleted = await Task.findOneAndUpdate(
-			{ _id: id },
+			{ _id: taskId },
 			{ isCompleted },
 			{ new: true }
 		);
@@ -110,11 +135,11 @@ app.patch("/tasks/:id/isCompleted", async (req, res) => {
 	}
 });
 
-// PATCH: Updating taskName, category or deadline or all
-app.patch("/tasks/:id", async (req, res) => {
-	const { id } = req.params;
+// PATCH: Updating taskName, (category?) or deadline or all
+app.patch("/tasks/:taskId", async (req, res) => {
+	const { taskId } = req.params;
 	try {
-		const updatedTask = await Task.findOneAndUpdate({ _id: id }, req.body, {
+		const updatedTask = await Task.findOneAndUpdate({ _id: taskId }, req.body, {
 			new: true,
 		});
 		if (updatedTask) {
@@ -129,11 +154,11 @@ app.patch("/tasks/:id", async (req, res) => {
 
 /************************** DELETE **************************/
 
-app.delete("/tasks/:id", async (req, res) => {
-	const { id } = req.params;
+app.delete("/tasks/:taskId", async (req, res) => {
+	const { taskId } = req.params;
 
 	try {
-		const deletedTask = await Task.findOneAndDelete({ _id: id });
+		const deletedTask = await Task.findOneAndDelete({ _id: taskId });
 		if (deletedTask) {
 			res.status(200).json({ response: deletedTask, success: true });
 		} else {
