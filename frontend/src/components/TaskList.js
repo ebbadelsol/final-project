@@ -8,12 +8,13 @@ import { showTasks, onToggleTask, onDeleteTask } from "../reducers/todos";
 import { LoadingIndicator } from "./LoadingIndicator";
 import { Icon } from "./icons/Icon";
 import { Color } from "./colors/Color";
+import { LabelPrimary, ParagraphSecondary } from "./Paragraphs";
 
-const ListContainer = styled.section`
+const TaskListContainer = styled.section`
 	margin-bottom: 110px;
 `;
 
-const Wrapper = styled.div`
+const SingleTask = styled.div`
 	display: flex;
 	align-items: flex-start;
 	justify-content: space-between;
@@ -21,31 +22,24 @@ const Wrapper = styled.div`
 	margin: 7px 0;
 	border-radius: 5px;
 	border: 1px solid var(--greyLight);
-	min-height: 60px;
-	padding: 15px;
+	/* min-height: 60px; */
+	/* padding: 15px; */
+	/* min-height: 4.25rem; */
+	padding: 0.75rem;
 `;
 
 const Checkbox = styled.input`
 	border-radius: 50%;
 	position: relative;
-	top: 5px;
+	top: 6px;
 	cursor: pointer;
 `;
 
-const TaskName = styled.label`
-	width: 100%;
-	padding-left: 10px;
-	margin-right: 10px;
+const TextContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	color: ${(props) => (props.isCompleted ? Color.GREY : Color.BLACK)};
-	cursor: pointer;
-`;
-
-const Date = styled.span`
-	font-size: 12px;
-	color: var(--grey);
-	line-height: 22px;
+	margin: 0 10px;
+	width: 100%;
 `;
 
 const DeleteButton = styled.button`
@@ -73,9 +67,9 @@ export const TaskList = () => {
 		<>
 			<LoadingIndicator />
 			{!loading && (
-				<ListContainer>
+				<TaskListContainer>
 					{taskItems.map((item) => (
-						<Wrapper key={item._id}>
+						<SingleTask key={item._id}>
 							<Checkbox
 								type="checkbox"
 								name={item._id}
@@ -86,19 +80,27 @@ export const TaskList = () => {
 									dispatch(onToggleTask(item._id, item.isCompleted))
 								}
 							/>
-							<TaskName htmlFor={item._id} isCompleted={item.isCompleted}>
-								{item.taskName}
-								<Date> Created {dayjs(item.createdAt).format("DD MMM")}</Date>
-							</TaskName>
+							<TextContainer>
+								<LabelPrimary
+									htmlFor={item._id}
+									isCompleted={item.isCompleted}
+									color={item.isCompleted ? Color.GREY : Color.BLACK}
+								>
+									{item.taskName}
+								</LabelPrimary>
+								<ParagraphSecondary>
+									Created {dayjs(item.createdAt).format("DD MMM")}
+								</ParagraphSecondary>
+							</TextContainer>
 							<DeleteButton
 								aria-label="delete"
 								onClick={() => dispatch(onDeleteTask(item._id))}
 							>
 								<Icon.Close color={Color.GREY} />
 							</DeleteButton>
-						</Wrapper>
+						</SingleTask>
 					))}
-				</ListContainer>
+				</TaskListContainer>
 			)}
 		</>
 	);
