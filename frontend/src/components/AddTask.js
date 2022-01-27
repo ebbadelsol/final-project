@@ -63,6 +63,7 @@ export const AddTask = () => {
 	const onEnter = (event) => {
 		if (event.key === "Enter") {
 			dispatch(onAddTask(input));
+			setInput("");
 		}
 	};
 
@@ -70,12 +71,12 @@ export const AddTask = () => {
 		<AddTaskSection>
 			<TextInput
 				type="text"
-				value={input.taskName}
+				value={input}
 				placeholder="Add a new task"
 				onKeyDown={onEnter}
 				onChange={(event) => setInput(event.target.value)}
 			/>
-			<AddTaskButton onClick={() => dispatch(onAddTask(input))}>
+			<AddTaskButton onClick={() => dispatch(onAddTask(input, setInput))}>
 				Add
 			</AddTaskButton>
 		</AddTaskSection>

@@ -15,6 +15,13 @@ export const todos = createSlice({
 		setError: (store, action) => {
 			store.error = action.payload;
 		},
+		deleteTask: (store, action) => {
+			store.items = store.items.filter((item) => item._id !== action.payload);
+		},
+		toggleTask: (store, action) => {
+			const task = store.items.find((item) => item._id === action.payload);
+			task.isCompleted = !task.isCompleted;
+		},
 	},
 });
 
@@ -59,7 +66,6 @@ const showTasksStopLoading = (time) => {
 
 export const onDeleteTask = (id) => {
 	return (dispatch) => {
-		dispatch(ui.actions.setLoading(true)); // Not sure if I want to have loading here
 		const options = {
 			method: "DELETE",
 		};
@@ -67,19 +73,18 @@ export const onDeleteTask = (id) => {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
+					dispatch(todos.actions.deleteTask(id));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setItems([]));
 					dispatch(todos.actions.setError(data.response));
 				}
-			})
-			.finally(() => dispatch(showTasksStopLoading(200)));
+			});
 	};
 };
 
 export const onToggleTask = (id, isCompleted) => {
 	return (dispatch) => {
-		dispatch(ui.actions.setLoading(true)); // Not sure if I want to have loading here
 		const options = {
 			method: "PATCH",
 			body: JSON.stringify({ isCompleted: !isCompleted ? true : false }),
@@ -91,16 +96,16 @@ export const onToggleTask = (id, isCompleted) => {
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
+					dispatch(todos.actions.toggleTask(id));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setError(data.response));
 				}
-			})
-			.finally(() => dispatch(showTasksStopLoading(0)));
+			});
 	};
 };
 
-export const onAddTask = (input) => {
+export const onAddTask = (input, setInput) => {
 	return (dispatch) => {
 		dispatch(ui.actions.setLoading(true));
 		const options = {
@@ -120,5 +125,6 @@ export const onAddTask = (input) => {
 				}
 			})
 			.finally(() => dispatch(showTasksStopLoading(400)));
+		setInput("");
 	};
 };
