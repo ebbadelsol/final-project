@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
 import { showTasks, onToggleTask, onDeleteTask } from "../reducers/todos";
 
@@ -54,10 +54,11 @@ const DeleteButton = styled.button`
 	cursor: pointer;
 `;
 
-export const TaskList = () => {
-	const taskItems = useSelector((store) => store.todos.items);
+export const TaskList = ({ tasks }) => {
+	// const tasks = useSelector((store) => store.todos.items);
 	const loading = useSelector((state) => state.ui.loading);
 	const dispatch = useDispatch();
+	// const today = new Date();
 
 	useEffect(() => {
 		dispatch(showTasks());
@@ -68,7 +69,7 @@ export const TaskList = () => {
 			<LoadingIndicator />
 			{!loading && (
 				<TaskListContainer>
-					{taskItems.map((item) => (
+					{tasks.map((item) => (
 						<SingleTask key={item._id}>
 							<Checkbox
 								type="checkbox"
@@ -88,9 +89,7 @@ export const TaskList = () => {
 								>
 									{item.taskName}
 								</LabelPrimary>
-								<ParagraphSecondary>
-									Created {dayjs(item.createdAt).format("DD MMM")}
-								</ParagraphSecondary>
+								<ParagraphSecondary>{item.category}</ParagraphSecondary>
 							</TextContainer>
 							<DeleteButton
 								aria-label="delete"

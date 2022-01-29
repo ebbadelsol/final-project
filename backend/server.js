@@ -71,7 +71,7 @@ app.get("/", (res) => {
 
 app.get("/tasks", async (req, res) => {
 	try {
-		const tasks = await Task.find().sort({ createdAt: "desc" });
+		const tasks = await Task.find().sort({ deadline: "asc" });
 		res.status(200).json({ response: tasks, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
