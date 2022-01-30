@@ -12,6 +12,9 @@ export const categories = createSlice({
 		setItems: (store, action) => {
 			store.items = action.payload;
 		},
+		setError: (store, action) => {
+			store.error = action.payload;
+		},
 	},
 });
 
