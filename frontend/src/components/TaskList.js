@@ -4,6 +4,7 @@ import styled from "styled-components";
 // import dayjs from "dayjs";
 
 import { showTasks, onToggleTask, onDeleteTask } from "../reducers/todos";
+import { showCategories } from "../reducers/categories";
 
 import { LoadingIndicator } from "./LoadingIndicator";
 import { Icon } from "./icons/Icon";
@@ -62,6 +63,10 @@ export const TaskList = ({ tasks }) => {
 
 	useEffect(() => {
 		dispatch(showTasks());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(showCategories());
 	}, [dispatch]);
 
 	return (

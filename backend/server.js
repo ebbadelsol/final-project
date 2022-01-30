@@ -78,6 +78,15 @@ app.get("/tasks", async (req, res) => {
 	}
 });
 
+app.get("/category", async (req, res) => {
+	try {
+		const category = await Category.find();
+		res.status(200).json({ response: category, success: true });
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+});
+
 app.get("/tasks/:categoryId", async (req, res) => {
 	const { categoryId } = req.params;
 	try {
@@ -90,20 +99,8 @@ app.get("/tasks/:categoryId", async (req, res) => {
 
 /************************** POST **************************/
 
-app.post("/category", async (req, res) => {
-	const { categoryName } = req.body;
-
-	try {
-		const newCategory = await new Category({ categoryName }).save();
-		res.status(201).json({ response: newCategory, success: true });
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-});
-
 app.post("/tasks", async (req, res) => {
 	const { taskName, categoryId, deadline } = req.body;
-
 	try {
 		const queriedCategory = await Category.findById(categoryId);
 		const newTask = await new Task({
@@ -112,6 +109,16 @@ app.post("/tasks", async (req, res) => {
 			deadline,
 		}).save();
 		res.status(201).json({ response: newTask, success: true });
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+});
+
+app.post("/category", async (req, res) => {
+	const { categoryName } = req.body;
+	try {
+		const newCategory = await new Category({ categoryName }).save();
+		res.status(201).json({ response: newCategory, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
 	}

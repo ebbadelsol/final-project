@@ -11,6 +11,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { todos } from "./reducers/todos";
 import { ui } from "./reducers/ui";
+import { categories } from "./reducers/categories";
 
 import { Account } from "./pages/Account";
 import { Calendar } from "./pages/Calendar";
@@ -23,6 +24,7 @@ import { NotFound } from "./pages/NotFound";
 const reducer = combineReducers({
 	todos: todos.reducer,
 	ui: ui.reducer,
+	categories: categories.reducer,
 });
 
 // const store = configureStore({ reducer });
