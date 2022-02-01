@@ -1,11 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
+
+import { showTasks } from "../reducers/todos";
+import { showCategories } from "../reducers/categories";
 
 import { Header } from "../components/Header";
 import { TaskList } from "../components/TaskList";
 import { AddTask } from "../components/AddTask";
+import { LoadingIndicator } from "../components/LoadingIndicator";
 
 const Container = styled.main`
 	margin: 20px;
@@ -19,9 +23,20 @@ const Container = styled.main`
 	}
 `;
 
-export const Tasks = () => {
+export const TasksPage = () => {
+	const loading = useSelector((state) => state.ui.loading);
 	const tasks = useSelector((store) => store.todos.items);
 	const todayFormated = dayjs(new Date()).format("YYYY-MM-DD");
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(showTasks());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(showCategories());
+	}, [dispatch]);
 
 	const dateFilter = (date) => (item) =>
 		dayjs(item.deadline).format("YYYY-MM-DD") === date;
@@ -29,6 +44,7 @@ export const Tasks = () => {
 	const taskByDate = (date) => tasks.filter(dateFilter(date));
 
 	const weekdayOfDeadline = (deadline) => {
+		// Add another if statement for passed date, return "Late"
 		if (todayFormated === deadline) {
 			return "Today";
 		} else if (todayFormated === deadline) {
@@ -44,16 +60,24 @@ export const Tasks = () => {
 
 	return (
 		<>
-			<Header />
-			<Container>
-				<h2>{weekdayOfDeadline("2022-01-31")}</h2>
-				<TaskList tasks={taskByDate("2022-01-31")} />
-				<h2>{weekdayOfDeadline("2022-02-01")}</h2>
-				<TaskList tasks={taskByDate("2022-02-01")} />
-				<h2>{weekdayOfDeadline("2022-02-11")}</h2>
-				<TaskList tasks={taskByDate("2022-02-11")} />
-				<AddTask />
-			</Container>
+			<LoadingIndicator />
+			{!loading && (
+				<>
+					<Header />
+					<Container>
+						<h2>{weekdayOfDeadline("2022-01-31")}</h2>
+						<TaskList tasks={taskByDate("2022-01-31")} />
+
+						<h2>{weekdayOfDeadline("2022-02-01")}</h2>
+						<TaskList tasks={taskByDate("2022-02-01")} />
+
+						<h2>{weekdayOfDeadline("2022-02-11")}</h2>
+						<TaskList tasks={taskByDate("2022-02-11")} />
+
+						<AddTask />
+					</Container>
+				</>
+			)}
 		</>
 	);
 };

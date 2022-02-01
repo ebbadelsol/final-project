@@ -13,13 +13,13 @@ import { todos } from "./reducers/todos";
 import { ui } from "./reducers/ui";
 import { categories } from "./reducers/categories";
 
-import { Account } from "./pages/Account";
-import { Calendar } from "./pages/Calendar";
-import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Register } from "./pages/Register";
-import { Tasks } from "./pages/Tasks";
-import { NotFound } from "./pages/NotFound";
+import { AccountPage } from "./pages/AccountPage";
+import { CalendarPage } from "./pages/CalendarPage";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { TasksPage } from "./pages/TasksPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 const reducer = combineReducers({
 	todos: todos.reducer,
@@ -53,13 +53,13 @@ export const App = () => {
 		<Provider store={store}>
 			<BrowserRouter>
 				<Routes>
-					<Route index path="/" element={<Home />} />
-					<Route index path="/log-in" element={<Login />} />
-					<Route index path="/register" element={<Register />} />
-					<Route index path="/account" element={<Account />} />
-					<Route index path="/tasks" element={<Tasks />} />
-					<Route index path="/calendar" element={<Calendar />} />
-					<Route path="*" element={<NotFound />} />
+					<Route index path="/" element={<HomePage />} />
+					<Route index path="/log-in" element={<LoginPage />} />
+					<Route index path="/register" element={<RegisterPage />} />
+					<Route index path="/account" element={<AccountPage />} />
+					<Route index path="/tasks" element={<TasksPage />} />
+					<Route index path="/calendar" element={<CalendarPage />} />
+					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</BrowserRouter>
 		</Provider>

@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-// import dayjs from "dayjs";
 
-import { showTasks, onToggleTask, onDeleteTask } from "../reducers/todos";
-import { showCategories } from "../reducers/categories";
+import { onToggleTask, onDeleteTask } from "../reducers/todos";
 
-import { LoadingIndicator } from "./LoadingIndicator";
 import { Icon } from "./icons/Icon";
 import { Color } from "./colors/Color";
 import { LabelPrimary, ParagraphSecondary } from "./Paragraphs";
@@ -56,56 +53,50 @@ const DeleteButton = styled.button`
 `;
 
 export const TaskList = ({ tasks }) => {
-	// const tasks = useSelector((store) => store.todos.items);
-	const loading = useSelector((state) => state.ui.loading);
 	const dispatch = useDispatch();
-	// const today = new Date();
+	// const categoryItems = useSelector((state) => state.categories.items);
 
-	useEffect(() => {
-		dispatch(showTasks());
-	}, [dispatch]);
-
-	useEffect(() => {
-		dispatch(showCategories());
-	}, [dispatch]);
+	// const filteredCategoryName = (taskId) => {
+	// 	const filteredItems = categoryItems.filter((item) => item._id === taskId);
+	// 	return filteredItems[0].categoryName;
+	// 	return console.log("filtered items and taskId", filteredItems, taskId);
+	// };
 
 	return (
 		<>
-			<LoadingIndicator />
-			{!loading && (
-				<TaskListContainer>
-					{tasks.map((item) => (
-						<SingleTask key={item._id}>
-							<Checkbox
-								type="checkbox"
-								name={item._id}
-								id={item._id}
-								value={item.taskName}
-								checked={item.isCompleted}
-								onChange={() =>
-									dispatch(onToggleTask(item._id, item.isCompleted))
-								}
-							/>
-							<TextContainer>
-								<LabelPrimary
-									htmlFor={item._id}
-									isCompleted={item.isCompleted}
-									color={item.isCompleted ? Color.GREY : Color.BLACK}
-								>
-									{item.taskName}
-								</LabelPrimary>
-								<ParagraphSecondary>{item.category}</ParagraphSecondary>
-							</TextContainer>
-							<DeleteButton
-								aria-label="delete"
-								onClick={() => dispatch(onDeleteTask(item._id))}
+			<TaskListContainer>
+				{tasks.map((item) => (
+					<SingleTask key={item._id}>
+						<Checkbox
+							type="checkbox"
+							name={item._id}
+							id={item._id}
+							value={item.taskName}
+							checked={item.isCompleted}
+							onChange={() =>
+								dispatch(onToggleTask(item._id, item.isCompleted))
+							}
+						/>
+						<TextContainer>
+							<LabelPrimary
+								htmlFor={item._id}
+								isCompleted={item.isCompleted}
+								color={item.isCompleted ? Color.GREY : Color.BLACK}
 							>
-								<Icon.Close color={Color.GREY} />
-							</DeleteButton>
-						</SingleTask>
-					))}
-				</TaskListContainer>
-			)}
+								{item.taskName}
+							</LabelPrimary>
+							{/* <ParagraphSecondary>{filteredCategoryName(item._id)}</ParagraphSecondary> */}
+							<ParagraphSecondary>{item.category}</ParagraphSecondary>
+						</TextContainer>
+						<DeleteButton
+							aria-label="delete"
+							onClick={() => dispatch(onDeleteTask(item._id))}
+						>
+							<Icon.Close color={Color.GREY} />
+						</DeleteButton>
+					</SingleTask>
+				))}
+			</TaskListContainer>
 		</>
 	);
 };
