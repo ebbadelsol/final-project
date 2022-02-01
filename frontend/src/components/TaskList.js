@@ -54,13 +54,6 @@ const DeleteButton = styled.button`
 
 export const TaskList = ({ tasks }) => {
 	const dispatch = useDispatch();
-	// const categoryItems = useSelector((state) => state.categories.items);
-
-	// const filteredCategoryName = (taskId) => {
-	// 	const filteredItems = categoryItems.filter((item) => item._id === taskId);
-	// 	return filteredItems[0].categoryName;
-	// 	return console.log("filtered items and taskId", filteredItems, taskId);
-	// };
 
 	return (
 		<>
@@ -85,8 +78,10 @@ export const TaskList = ({ tasks }) => {
 							>
 								{item.taskName}
 							</LabelPrimary>
-							{/* <ParagraphSecondary>{filteredCategoryName(item._id)}</ParagraphSecondary> */}
-							<ParagraphSecondary>{item.category}</ParagraphSecondary>
+							<ParagraphSecondary>
+								Category: {item?.category?.categoryName} <br /> Deadline:{" "}
+								{item.deadline}
+							</ParagraphSecondary>
 						</TextContainer>
 						<DeleteButton
 							aria-label="delete"
