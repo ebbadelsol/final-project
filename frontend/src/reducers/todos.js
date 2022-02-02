@@ -105,12 +105,20 @@ export const onToggleTask = (id, isCompleted) => {
 	};
 };
 
-export const onAddTask = (input, setInput) => {
+export const onAddTask = (
+	taskInput,
+	/*setTaskInput,*/ deadline,
+	categoryInput
+) => {
 	return (dispatch) => {
 		dispatch(ui.actions.setLoading(true));
 		const options = {
 			method: "POST",
-			body: JSON.stringify({ taskName: input }),
+			body: JSON.stringify({
+				taskName: taskInput,
+				deadline: deadline,
+				categoryId: categoryInput,
+			}),
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -125,6 +133,6 @@ export const onAddTask = (input, setInput) => {
 				}
 			})
 			.finally(() => dispatch(showTasksStopLoading(400)));
-		setInput("");
+		// setTaskInput("");
 	};
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
@@ -27,6 +27,7 @@ export const TasksPage = () => {
 	const loading = useSelector((state) => state.ui.loading);
 	const tasks = useSelector((store) => store.todos.items);
 	const todayFormated = dayjs(new Date()).format("YYYY-MM-DD");
+	const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
 	const dispatch = useDispatch();
 
@@ -58,6 +59,26 @@ export const TasksPage = () => {
 		}
 	};
 
+	const allDeadlines = [];
+
+	tasks.forEach((item) => {
+		if (
+			allDeadlines.find(
+				(newItem) =>
+					dayjs(newItem.deadline).format("YYYY-MM-DD") ===
+					dayjs(item.deadline).format("YYYY-MM-DD")
+			)
+		) {
+			return;
+		}
+
+		allDeadlines.push({
+			deadline: dayjs(item.deadline).format("YYYY-MM-DD"),
+		});
+	});
+
+	console.log("allDeadlines", allDeadlines);
+
 	return (
 		<>
 			<LoadingIndicator />
@@ -65,16 +86,17 @@ export const TasksPage = () => {
 				<>
 					<Header />
 					<Container>
-						<h2>{weekdayOfDeadline("2022-01-31")}</h2>
-						<TaskList tasks={taskByDate("2022-01-31")} />
+						{allDeadlines.map((item) => (
+							<div key={item.deadline}>
+								<h2>{weekdayOfDeadline(item.deadline)}</h2>
+								<TaskList tasks={taskByDate(item.deadline)} />
+							</div>
+						))}
 
-						<h2>{weekdayOfDeadline("2022-02-01")}</h2>
-						<TaskList tasks={taskByDate("2022-02-01")} />
-
-						<h2>{weekdayOfDeadline("2022-02-11")}</h2>
-						<TaskList tasks={taskByDate("2022-02-11")} />
-
-						<AddTask />
+						<button onClick={() => setIsAddTaskOpen(!isAddTaskOpen)}>
+							{isAddTaskOpen ? "Close" : "Open"}
+						</button>
+						{isAddTaskOpen && <AddTask />}
 					</Container>
 				</>
 			)}
