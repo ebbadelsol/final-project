@@ -23,10 +23,16 @@ const Container = styled.main`
 	}
 `;
 
+const Button = styled.button`
+	z-index: 2;
+	position: fixed;
+	top: 90vh;
+	right: 0;
+`;
+
 export const TasksPage = () => {
 	const loading = useSelector((state) => state.ui.loading);
 	const tasks = useSelector((store) => store.todos.items);
-	const todayFormated = dayjs(new Date()).format("YYYY-MM-DD");
 	const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
 	const dispatch = useDispatch();
@@ -39,26 +45,45 @@ export const TasksPage = () => {
 		dispatch(showCategories());
 	}, [dispatch]);
 
+	const dateGenerator = (number) =>
+		dayjs(new Date().setDate(new Date().getDate() + number)).format(
+			"YYYY-MM-DD"
+		);
+
 	const dateFilter = (date) => (item) =>
 		dayjs(item.deadline).format("YYYY-MM-DD") === date;
 
 	const taskByDate = (date) => tasks.filter(dateFilter(date));
 
-	const weekdayOfDeadline = (deadline) => {
-		// Add another if statement for passed date, return "Late"
-		if (todayFormated === deadline) {
+	const isLate = (date) => {
+		if (dayjs(new Date()).format("YYYY-MM-DD") === date) {
+			return false;
+		} else {
+			return dayjs().isAfter(dayjs(date));
+		}
+	};
+
+	const formattedDate = (deadline) => {
+		if (isLate(deadline)) {
+			return "Late";
+		} else if (dateGenerator(0) === deadline) {
 			return "Today";
-		} else if (todayFormated === deadline) {
-			// Change this to fit tomorrow
+		} else if (dateGenerator(1) === deadline) {
 			return "Tomorrow";
-		} else if (todayFormated === deadline) {
-			// Change this to fit rest of the weekdays for one week
+		} else if (
+			dateGenerator(2) === deadline ||
+			dateGenerator(3) === deadline ||
+			dateGenerator(4) === deadline ||
+			dateGenerator(5) === deadline ||
+			dateGenerator(6) === deadline
+		) {
 			return dayjs(deadline).format("dddd");
 		} else {
 			return dayjs(deadline).format("DD MMM");
 		}
 	};
 
+	// const lateDeadlines = [];
 	const allDeadlines = [];
 
 	tasks.forEach((item) => {
@@ -77,8 +102,6 @@ export const TasksPage = () => {
 		});
 	});
 
-	console.log("allDeadlines", allDeadlines);
-
 	return (
 		<>
 			<LoadingIndicator />
@@ -88,14 +111,14 @@ export const TasksPage = () => {
 					<Container>
 						{allDeadlines.map((item) => (
 							<div key={item.deadline}>
-								<h2>{weekdayOfDeadline(item.deadline)}</h2>
+								<h2>{formattedDate(item.deadline)}</h2>
 								<TaskList tasks={taskByDate(item.deadline)} />
 							</div>
 						))}
 
-						<button onClick={() => setIsAddTaskOpen(!isAddTaskOpen)}>
+						<Button onClick={() => setIsAddTaskOpen(!isAddTaskOpen)}>
 							{isAddTaskOpen ? "Close" : "Open"}
-						</button>
+						</Button>
 						{isAddTaskOpen && <AddTask />}
 					</Container>
 				</>
