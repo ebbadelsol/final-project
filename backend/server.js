@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-// import bcrypt from 'bcrypt';
-// import crypto from 'crypto';
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 import listEndpoints from "express-list-endpoints";
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/taskAPI";
@@ -16,30 +16,30 @@ mongoose.Promise = Promise;
 const port = process.env.PORT || 8080;
 const app = express();
 
-const TaskSchema = new mongoose.Schema({
-	taskName: {
+/************************** Schemas **************************/
+
+const UserSchema = new mongoose.Schema({
+	// email: {
+	// 	type: String,
+	// 	unique: true,
+	// 	required: true,
+	// 	trim: true,
+	// },
+	username: {
+		type: String,
+		unique: true,
+		required: true,
+		minlength: 4,
+	},
+	password: {
 		type: String,
 		required: true,
-		minlength: 3,
-		maxlength: 40,
 		trim: true,
-		unique: true,
+		minlength: 7,
 	},
-	category: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Category",
-	},
-	deadline: {
-		type: Date,
-		default: Date.now,
-	},
-	isCompleted: {
-		type: Boolean,
-		default: false,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
+	accessToken: {
+		type: String,
+		default: () => crypto.randomBytes(128).toString("hex"),
 	},
 });
 
@@ -54,32 +54,223 @@ const CategorySchema = new mongoose.Schema({
 	},
 });
 
+const TaskSchema = new mongoose.Schema({
+	taskName: {
+		type: String,
+		required: true,
+		minlength: 3,
+		maxlength: 40,
+		trim: true,
+		unique: true,
+	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+	},
+	category: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Category",
+	},
+	deadline: {
+		type: Date,
+		default: Date.now,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
+	isCompleted: {
+		type: Boolean,
+		default: false,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
+});
+
+/************************** Models **************************/
+
+const User = mongoose.model("User", UserSchema);
+const Category = mongoose.model("Category", CategorySchema);
 const Task = mongoose.model("Task", TaskSchema);
 
-const Category = mongoose.model("Category", CategorySchema);
+/********** Middlewares to enable cors and json body parsing **********/
 
-// Add middlewares to enable cors and json body parsing
+// Choose one out of three options below
+
+// 1. Allows all domains:
 app.use(cors());
+
+// 2. Allows only one specific domain:
+// app.use(
+// 	cors({
+// 		origin: "https://example1.com",
+// 	})
+// );
+
+// 3. Allows multiple domains
+// const allowedDomains = [
+// 	"https://example1.com",
+// 	"https://example2.com",
+// ];
+// app.use(
+// 	cors({
+// 		origin: (origin, callback) => {
+// 			if (allowedDomains.includes(origin)) {
+// 				return callback(null, true);
+// 			} else {
+// 				return callback(new Error("This domain is not allowed"), false);
+// 			}
+// 		},
+// 	})
+// );
+
 app.use(express.json());
 
-// Start defining your routes here
+/************************** Authenticate User **************************/
+
+const authenticateUser = async (req, res, next) => {
+	const accessToken = req.header("Authorization");
+
+	try {
+		const user = await User.findOne({ accessToken });
+		if (user) {
+			next();
+		} else {
+			res.status(401).json({ response: "Please, log in", success: false });
+		}
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
+};
+
+/************************** Routes **************************/
+
 app.get("/", (res) => {
-	res.send(listEndpoints(app));
+	res.send(listEndpoints(app)); // Delete listEndpoints?
+});
+
+/************************** POST **************************/
+
+// Signup
+app.post("/signup", async (req, res) => {
+	const { /*email,*/ username, password } = req.body;
+
+	try {
+		const salt = bcrypt.genSaltSync();
+		if (password.length < 7) {
+			throw "Password must be at least 7 characters long";
+		}
+		if (!username) {
+			throw "Please enter a username";
+		}
+		if (username.unique === false) {
+			throw "Username is not available";
+		}
+
+		const newUser = await new User({
+			// email,
+			username,
+			password: bcrypt.hashSync(password, salt),
+		}).save();
+
+		res.status(201).json({
+			response: {
+				userId: newUser._id,
+				// email: newUser.email,
+				username: newUser.username,
+				accessToken: newUser.accessToken,
+			},
+			success: true,
+		});
+	} catch (error) {
+		res
+			.status(400)
+			.json({ message: "Invalid request", response: error, success: false });
+	}
+});
+
+// Signin
+app.post("/signin", async (req, res) => {
+	const { /*email,*/ username, password } = req.body;
+
+	try {
+		const user = await User.findOne({ username });
+
+		if (user && bcrypt.compareSync(password, user.password)) {
+			res.status(200).json({
+				response: {
+					userId: user._id,
+					// email: user.email,
+					username: user.username,
+					accessToken: user.accessToken,
+				},
+				success: true,
+			});
+		} else {
+			res.status(404).json({
+				response: "Username or password is incorrect or doesn't match",
+				success: false,
+			});
+		}
+	} catch (error) {
+		res
+			.status(400)
+			.json({ message: "Invalid request", response: error, success: false });
+	}
+});
+
+// Tasks
+app.post("/tasks", authenticateUser);
+app.post("/tasks", async (req, res) => {
+	const { taskName, categoryId, deadline, user } = req.body;
+	try {
+		const queriedCategory = await Category.findById(categoryId);
+		const newTask = await new Task({
+			taskName,
+			category: queriedCategory,
+			deadline,
+			user: req.user,
+		}).save();
+		res.status(201).json({ response: newTask, success: true });
+	} catch (error) {
+		res
+			.status(400)
+			.json({ message: "Invalid request", response: error, success: false });
+	}
+});
+
+// Category
+// app.post("/tasks/", authenticateUser);
+app.post("/category", async (req, res) => {
+	const { categoryName } = req.body;
+	try {
+		const newCategory = await new Category({ categoryName }).save();
+		res.status(201).json({ response: newCategory, success: true });
+	} catch (error) {
+		res.status(400).json({ response: error, success: false });
+	}
 });
 
 /************************** GET **************************/
 
-app.get("/tasks", async (req, res) => {
+app.get("/tasks/:userId", authenticateUser);
+app.get("/tasks/:userId", async (req, res) => {
+	const { userId } = req.params;
+
 	try {
-		const tasks = await Task.find()
+		const tasks = await Task.find({ user: userId })
 			.populate("category")
-			.sort({ deadline: "asc" });
+			.sort({ createdAt: "asc" });
+		// .sort({ deadline: "asc" });
 		res.status(200).json({ response: tasks, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
 	}
 });
 
+// app.get("/category", authenticateUser);
 app.get("/category", async (req, res) => {
 	try {
 		const category = await Category.find();
@@ -89,38 +280,12 @@ app.get("/category", async (req, res) => {
 	}
 });
 
+// app.get("/tasks/:categoryId", authenticateUser);
 app.get("/tasks/:categoryId", async (req, res) => {
 	const { categoryId } = req.params;
 	try {
 		const tasks = await Task.findById(categoryId).populate("category");
 		res.status(200).json({ response: tasks, success: true });
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-});
-
-/************************** POST **************************/
-
-app.post("/tasks", async (req, res) => {
-	const { taskName, categoryId, deadline } = req.body;
-	try {
-		const queriedCategory = await Category.findById(categoryId);
-		const newTask = await new Task({
-			taskName,
-			category: queriedCategory,
-			deadline,
-		}).save();
-		res.status(201).json({ response: newTask, success: true });
-	} catch (error) {
-		res.status(400).json({ response: error, success: false });
-	}
-});
-
-app.post("/category", async (req, res) => {
-	const { categoryName } = req.body;
-	try {
-		const newCategory = await new Category({ categoryName }).save();
-		res.status(201).json({ response: newCategory, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
 	}
@@ -145,6 +310,7 @@ app.patch("/tasks/:taskId/isCompleted", async (req, res) => {
 });
 
 // PATCH: Updating taskName, (category?) or deadline or all
+app.patch("/tasks/:taskId", authenticateUser);
 app.patch("/tasks/:taskId", async (req, res) => {
 	const { taskId } = req.params;
 	try {
@@ -157,12 +323,17 @@ app.patch("/tasks/:taskId", async (req, res) => {
 			res.status(404).json({ response: "Task not found", success: false });
 		}
 	} catch (error) {
-		res.status(400).json({ response: error, success: false });
+		res.status(400).json({
+			message: "Could not update task",
+			response: error,
+			success: false,
+		});
 	}
 });
 
 /************************** DELETE **************************/
 
+app.delete("/tasks/:taskId", authenticateUser);
 app.delete("/tasks/:taskId", async (req, res) => {
 	const { taskId } = req.params;
 
@@ -174,7 +345,11 @@ app.delete("/tasks/:taskId", async (req, res) => {
 			res.status(404).json({ response: "Task not found", success: false });
 		}
 	} catch (error) {
-		res.status(400).json({ response: error, success: false });
+		res.status(400).json({
+			message: "Could not delete task",
+			response: error,
+			success: false,
+		});
 	}
 });
 
