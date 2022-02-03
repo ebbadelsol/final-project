@@ -3,13 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
-import { showTasks } from "../reducers/todos";
-import { showCategories } from "../reducers/categories";
-
 import { Header } from "../components/Header";
 import { TaskList } from "../components/TaskList";
 import { AddTask } from "../components/AddTask";
 import { LoadingIndicator } from "../components/LoadingIndicator";
+import { showTasks } from "../reducers/todos";
+import { showCategories } from "../reducers/categories";
 
 const Container = styled.main`
 	margin: 20px;
@@ -34,6 +33,9 @@ export const TasksPage = () => {
 	const loading = useSelector((state) => state.ui.loading);
 	const tasks = useSelector((store) => store.todos.items);
 	const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+
+	// const lateDeadlines = [];
+	const allDeadlines = [];
 
 	const dispatch = useDispatch();
 
@@ -82,9 +84,6 @@ export const TasksPage = () => {
 			return dayjs(deadline).format("DD MMM");
 		}
 	};
-
-	// const lateDeadlines = [];
-	const allDeadlines = [];
 
 	tasks.forEach((item) => {
 		if (
