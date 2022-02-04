@@ -25,13 +25,16 @@ export const todos = createSlice({
 	},
 });
 
-export const showTasks = () => {
+export const showTasks = (accessToken, userId) => {
 	return (dispatch) => {
 		dispatch(ui.actions.setLoading(true));
 		const options = {
 			method: "GET",
+			headers: {
+				Authorization: accessToken,
+			},
 		};
-		fetch(API_URL("tasks"), options)
+		fetch(API_URL(`tasks/${userId}`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -45,12 +48,15 @@ export const showTasks = () => {
 	};
 };
 
-const showTasksStopLoading = (time) => {
+const showTasksStopLoading = (accessToken, userId) => {
 	return (dispatch) => {
 		const options = {
 			method: "GET",
+			headers: {
+				Authorization: accessToken,
+			},
 		};
-		fetch(API_URL("tasks"), options)
+		fetch(API_URL(`tasks/${userId}`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -60,20 +66,23 @@ const showTasksStopLoading = (time) => {
 					dispatch(todos.actions.setError(data.response));
 				}
 			})
-			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), time));
+			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), 400));
 	};
 };
 
-export const onDeleteTask = (id) => {
+export const onDeleteTask = (accessToken, taskId) => {
 	return (dispatch) => {
 		const options = {
 			method: "DELETE",
+			headers: {
+				Authorization: accessToken,
+			},
 		};
-		fetch(API_URL(`tasks/${id}`), options)
+		fetch(API_URL(`tasks/${taskId}`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
-					dispatch(todos.actions.deleteTask(id));
+					dispatch(todos.actions.deleteTask(taskId));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setItems([]));
@@ -83,20 +92,21 @@ export const onDeleteTask = (id) => {
 	};
 };
 
-export const onToggleTask = (id, isCompleted) => {
+export const onToggleTask = (accessToken, taskId, isCompleted) => {
 	return (dispatch) => {
 		const options = {
 			method: "PATCH",
 			body: JSON.stringify({ isCompleted: !isCompleted ? true : false }),
 			headers: {
+				Authorization: accessToken,
 				"Content-Type": "application/json",
 			},
 		};
-		fetch(API_URL(`tasks/${id}/isCompleted`), options)
+		fetch(API_URL(`tasks/${taskId}/isCompleted`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
-					dispatch(todos.actions.toggleTask(id));
+					dispatch(todos.actions.toggleTask(taskId));
 					dispatch(todos.actions.setError(null));
 				} else {
 					dispatch(todos.actions.setError(data.response));
@@ -106,9 +116,11 @@ export const onToggleTask = (id, isCompleted) => {
 };
 
 export const onAddTask = (
+	accessToken,
 	taskInput,
 	/*setTaskInput,*/ deadline,
-	categoryInput
+	categoryInput,
+	userId
 ) => {
 	return (dispatch) => {
 		dispatch(ui.actions.setLoading(true));
@@ -118,8 +130,10 @@ export const onAddTask = (
 				taskName: taskInput,
 				deadline: deadline,
 				categoryId: categoryInput,
+				userId: userId,
 			}),
 			headers: {
+				Authorization: accessToken,
 				"Content-Type": "application/json",
 			},
 		};
@@ -132,7 +146,7 @@ export const onAddTask = (
 					dispatch(todos.actions.setError(data.response));
 				}
 			})
-			.finally(() => dispatch(showTasksStopLoading(400)));
+			.finally(() => dispatch(showTasksStopLoading(accessToken, userId)));
 		// setTaskInput("");
 	};
 };

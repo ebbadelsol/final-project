@@ -224,14 +224,14 @@ app.post("/signin", async (req, res) => {
 // Tasks
 app.post("/tasks", authenticateUser);
 app.post("/tasks", async (req, res) => {
-	const { taskName, categoryId, deadline, user } = req.body;
+	const { taskName, categoryId, deadline, userId } = req.body;
 	try {
 		const queriedCategory = await Category.findById(categoryId);
 		const newTask = await new Task({
 			taskName,
 			category: queriedCategory,
 			deadline,
-			user: req.user,
+			userId: req.user,
 		}).save();
 		res.status(201).json({ response: newTask, success: true });
 	} catch (error) {

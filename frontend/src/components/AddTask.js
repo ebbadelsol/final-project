@@ -24,16 +24,20 @@ const AddTaskContainer = styled.div`
 `;
 
 export const AddTask = () => {
+	const accessToken = useSelector((store) => store.user.accessToken);
+	const userId = useSelector((store) => store.user.userId);
+	const categories = useSelector((state) => state.categories);
 	const [taskInput, setTaskInput] = useState("");
 	const [deadline, setDeadline] = useState(new Date());
 	const [categoryInput, setCategoryInput] = useState("");
 
-	const categories = useSelector((state) => state.categories);
 	const dispatch = useDispatch();
 
 	const onEnter = (event) => {
 		if (event.key === "Enter") {
-			dispatch(onAddTask(taskInput, deadline, categoryInput));
+			dispatch(
+				onAddTask(accessToken, taskInput, deadline, categoryInput, userId)
+			);
 			// setTaskInput("");
 		}
 	};
@@ -79,7 +83,9 @@ export const AddTask = () => {
 				/>
 				<button
 					onClick={() =>
-						dispatch(onAddTask(taskInput, deadline, categoryInput))
+						dispatch(
+							onAddTask(accessToken, taskInput, deadline, categoryInput, userId)
+						)
 					}
 				>
 					Add

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { onToggleTask, onDeleteTask } from "../reducers/todos";
@@ -53,6 +53,7 @@ const DeleteButton = styled.button`
 `;
 
 export const TaskList = ({ tasks }) => {
+	const accessToken = useSelector((store) => store.user.accessToken);
 	const dispatch = useDispatch();
 
 	return (
@@ -67,7 +68,7 @@ export const TaskList = ({ tasks }) => {
 							value={item.taskName}
 							checked={item.isCompleted}
 							onChange={() =>
-								dispatch(onToggleTask(item._id, item.isCompleted))
+								dispatch(onToggleTask(accessToken, item._id, item.isCompleted))
 							}
 						/>
 						<TextContainer>
@@ -85,7 +86,7 @@ export const TaskList = ({ tasks }) => {
 						</TextContainer>
 						<DeleteButton
 							aria-label="delete"
-							onClick={() => dispatch(onDeleteTask(item._id))}
+							onClick={() => dispatch(onDeleteTask(accessToken, item._id))}
 						>
 							<Icon.Close color={Color.GREY} />
 						</DeleteButton>

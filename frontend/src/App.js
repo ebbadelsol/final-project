@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { todos } from "./reducers/todos";
 import { ui } from "./reducers/ui";
 import { categories } from "./reducers/categories";
+import { user } from "./reducers/user";
 
 import { AccountPage } from "./pages/AccountPage";
 import { CalendarPage } from "./pages/CalendarPage";
@@ -25,6 +26,7 @@ const reducer = combineReducers({
 	todos: todos.reducer,
 	ui: ui.reducer,
 	categories: categories.reducer,
+	user: user.reducer,
 });
 
 // const store = configureStore({ reducer });

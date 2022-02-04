@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
 
@@ -32,16 +33,25 @@ const Button = styled.button`
 export const TasksPage = () => {
 	const loading = useSelector((state) => state.ui.loading);
 	const tasks = useSelector((store) => store.todos.items);
+	const accessToken = useSelector((store) => store.user.accessToken);
+	const userId = useSelector((store) => store.user.userId);
 	const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
 	// const lateDeadlines = [];
 	const allDeadlines = [];
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		dispatch(showTasks());
-	}, [dispatch]);
+		if (!accessToken) {
+			navigate("/login");
+		}
+	}, [accessToken, navigate]);
+
+	useEffect(() => {
+		dispatch(showTasks(accessToken, userId));
+	}, [dispatch, accessToken, userId]);
 
 	useEffect(() => {
 		dispatch(showCategories());
