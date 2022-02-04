@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { ui } from "./ui";
-import { TASK_URL, TASK_ID_URL, TASK_ID_COMPLETE_URL } from "../utils/urls";
+import { API_URL } from "../utils/constants";
 
 export const todos = createSlice({
 	name: "todos",
@@ -31,7 +31,7 @@ export const showTasks = () => {
 		const options = {
 			method: "GET",
 		};
-		fetch(TASK_URL, options)
+		fetch(API_URL("tasks"), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -50,7 +50,7 @@ const showTasksStopLoading = (time) => {
 		const options = {
 			method: "GET",
 		};
-		fetch(TASK_URL, options)
+		fetch(API_URL("tasks"), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -69,7 +69,7 @@ export const onDeleteTask = (id) => {
 		const options = {
 			method: "DELETE",
 		};
-		fetch(TASK_ID_URL(id), options)
+		fetch(API_URL(`tasks/${id}`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -92,7 +92,7 @@ export const onToggleTask = (id, isCompleted) => {
 				"Content-Type": "application/json",
 			},
 		};
-		fetch(TASK_ID_COMPLETE_URL(id), options)
+		fetch(API_URL(`tasks/${id}/isCompleted`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
@@ -123,7 +123,7 @@ export const onAddTask = (
 				"Content-Type": "application/json",
 			},
 		};
-		fetch(TASK_URL, options)
+		fetch(API_URL("tasks"), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {

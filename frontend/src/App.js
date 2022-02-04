@@ -54,7 +54,7 @@ export const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route index path="/" element={<HomePage />} />
-					<Route index path="/log-in" element={<LoginPage />} />
+					<Route index path="/login" element={<LoginPage />} />
 					<Route index path="/register" element={<RegisterPage />} />
 					<Route index path="/account" element={<AccountPage />} />
 					<Route index path="/tasks" element={<TasksPage />} />

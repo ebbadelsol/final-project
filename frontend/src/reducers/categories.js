@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { ui } from "./ui";
-import { CATEGORY_URL } from "../utils/urls";
+import { API_URL } from "../utils/constants";
 
 export const categories = createSlice({
 	name: "categories",
@@ -24,7 +24,7 @@ export const showCategories = () => {
 		const options = {
 			method: "GET",
 		};
-		fetch(CATEGORY_URL, options)
+		fetch(API_URL("category"), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {

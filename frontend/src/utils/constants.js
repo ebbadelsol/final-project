@@ -1,4 +1,11 @@
 // To GET and POST tasks
+const BASE_URL = "http://localhost:8080";
+
+export const API_URL = (slug) => `${BASE_URL}/${slug}`;
+
+/*
+
+// To GET and POST tasks
 export const TASK_URL = "http://localhost:8080/tasks";
 
 // To GET and POST categories
@@ -10,3 +17,5 @@ export const TASK_ID_URL = (id) => `http://localhost:8080/tasks/${id}/`;
 // To change isCompleted from false to true (PATCH)
 export const TASK_ID_COMPLETE_URL = (id) =>
 	`http://localhost:8080/tasks/${id}/isCompleted`;
+
+	*/
