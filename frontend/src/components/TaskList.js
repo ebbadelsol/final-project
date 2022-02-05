@@ -7,10 +7,7 @@ import { onToggleTask, onDeleteTask } from "../reducers/todos";
 import { Icon } from "./icons/Icon";
 import { Color } from "./colors/Color";
 import { LabelPrimary, ParagraphSecondary } from "./Paragraphs";
-
-const TaskListContainer = styled.section`
-	margin-bottom: 110px;
-`;
+import { SmallButton } from "./Buttons";
 
 const SingleTask = styled.div`
 	display: flex;
@@ -40,59 +37,45 @@ const TextContainer = styled.div`
 	width: 100%;
 `;
 
-const DeleteButton = styled.button`
-	display: flex;
-	justify-content: center;
-	border: solid 1px var(--grey);
-	border-radius: 50%;
-	background-color: var(--white);
-	position: relative;
-	top: 5px;
-	padding: 3px;
-	cursor: pointer;
-`;
-
 export const TaskList = ({ tasks }) => {
 	const accessToken = useSelector((store) => store.user.accessToken);
 	const dispatch = useDispatch();
 
 	return (
 		<>
-			<TaskListContainer>
-				{tasks.map((item) => (
-					<SingleTask key={item._id}>
-						<Checkbox
-							type="checkbox"
-							name={item._id}
-							id={item._id}
-							value={item.taskName}
-							checked={item.isCompleted}
-							onChange={() =>
-								dispatch(onToggleTask(accessToken, item._id, item.isCompleted))
-							}
-						/>
-						<TextContainer>
-							<LabelPrimary
-								htmlFor={item._id}
-								isCompleted={item.isCompleted}
-								color={item.isCompleted ? Color.GREY : Color.BLACK}
-							>
-								{item.taskName}
-							</LabelPrimary>
-							<ParagraphSecondary>
-								Category: {item?.category?.categoryName} <br /> Deadline:{" "}
-								{item.deadline}
-							</ParagraphSecondary>
-						</TextContainer>
-						<DeleteButton
-							aria-label="delete"
-							onClick={() => dispatch(onDeleteTask(accessToken, item._id))}
+			{tasks.map((item) => (
+				<SingleTask key={item._id}>
+					<Checkbox
+						type="checkbox"
+						name={item._id}
+						id={item._id}
+						value={item.taskName}
+						checked={item.isCompleted}
+						onChange={() =>
+							dispatch(onToggleTask(accessToken, item._id, item.isCompleted))
+						}
+					/>
+					<TextContainer>
+						<LabelPrimary
+							htmlFor={item._id}
+							isCompleted={item.isCompleted}
+							color={item.isCompleted ? Color.GREY : Color.BLACK}
 						>
-							<Icon.Close color={Color.GREY} />
-						</DeleteButton>
-					</SingleTask>
-				))}
-			</TaskListContainer>
+							{item.taskName}
+						</LabelPrimary>
+						<ParagraphSecondary>
+							Category: {item?.category?.categoryName} <br /> Deadline:{" "}
+							{item.deadline}
+						</ParagraphSecondary>
+					</TextContainer>
+					<SmallButton
+						onClick={() => dispatch(onDeleteTask(accessToken, item._id))}
+						ariaLabel="Delete task"
+					>
+						<Icon.Close size="0.75rem" color={Color.GREY} />
+					</SmallButton>
+				</SingleTask>
+			))}
 		</>
 	);
 };

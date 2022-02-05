@@ -5,7 +5,7 @@ import { Counter } from "./Counter";
 
 const HeaderSection = styled.header`
 	background-color: var(--primaryColor);
-	padding: 30px 20px;
+	padding: 1.75rem 1.25rem;
 	color: var(--white);
 
 	@media (min-width: 700px) {

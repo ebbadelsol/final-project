@@ -10,24 +10,20 @@ import { AddTask } from "../components/AddTask";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { showTasks } from "../reducers/todos";
 import { showCategories } from "../reducers/categories";
+import { Icon } from "../components/icons/Icon";
+import { Color } from "../components/colors/Color";
+import { BigButton } from "../components/Buttons";
 
 const Container = styled.main`
-	margin: 20px;
+	margin: 1.25rem 1.25rem 6.5rem;
 
 	@media (min-width: 700px) {
-		margin: 30px 15vw;
+		margin: 1.75rem 15vw;
 	}
 
 	@media (min-width: 1025px) {
-		margin: 30px 20vw;
+		margin: 1.75rem 20vw;
 	}
-`;
-
-const Button = styled.button`
-	z-index: 2;
-	position: fixed;
-	top: 90vh;
-	right: 0;
 `;
 
 export const TasksPage = () => {
@@ -125,10 +121,25 @@ export const TasksPage = () => {
 							</div>
 						))}
 
-						<Button onClick={() => setIsAddTaskOpen(!isAddTaskOpen)}>
-							{isAddTaskOpen ? "Close" : "Open"}
-						</Button>
-						{isAddTaskOpen && <AddTask />}
+						<BigButton
+							onClick={() => setIsAddTaskOpen(!isAddTaskOpen)}
+							ariaLabel="New task"
+							backgroundColor={
+								isAddTaskOpen ? Color.BLACK : Color.PRIMARY_COLOR
+							}
+						>
+							{isAddTaskOpen ? (
+								<Icon.Close color={Color.WHITE} />
+							) : (
+								<Icon.Add color={Color.WHITE} />
+							)}
+						</BigButton>
+						{isAddTaskOpen && (
+							<AddTask
+								setIsAddTaskOpen={setIsAddTaskOpen}
+								isAddTaskOpen={isAddTaskOpen}
+							/>
+						)}
 					</Container>
 				</>
 			)}

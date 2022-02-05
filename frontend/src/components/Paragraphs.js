@@ -32,37 +32,18 @@ const TextSecondary = styled.p`
 	}
 `;
 
-export const ParagraphPrimary = ({ className, color, children }) => {
-	return (
-		<TextPrimary className={className} style={{ color }}>
-			{children}
-		</TextPrimary>
-	);
+export const ParagraphPrimary = ({ color, children }) => {
+	return <TextPrimary style={{ color }}>{children}</TextPrimary>;
 };
 
-export const LabelPrimary = ({
-	htmlFor,
-	isCompleted,
-	className,
-	color,
-	children,
-}) => {
+export const LabelPrimary = ({ htmlFor, isCompleted, color, children }) => {
 	return (
-		<Label
-			htmlFor={htmlFor}
-			isCompleted={isCompleted}
-			className={className}
-			style={{ color }}
-		>
+		<Label htmlFor={htmlFor} isCompleted={isCompleted} style={{ color }}>
 			{children}
 		</Label>
 	);
 };
 
-export const ParagraphSecondary = ({ className, color, children }) => {
-	return (
-		<TextSecondary className={className} style={{ color }}>
-			{children}
-		</TextSecondary>
-	);
+export const ParagraphSecondary = ({ color, children }) => {
+	return <TextSecondary style={{ color }}>{children}</TextSecondary>;
 };

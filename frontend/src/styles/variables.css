@@ -7,4 +7,7 @@
 	--greyLightest: #f0f0f0;
 	--greyLight: #e0e0e0;
 	--grey: #b0b0b0;
+
+	--shadow-1: rgba(0, 0, 0, 0.1);
+	--shadow-2: rgba(0, 0, 0, 0.2);
 }

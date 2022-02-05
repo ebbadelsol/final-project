@@ -5,22 +5,29 @@ import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { onAddTask } from "../reducers/todos";
+import { SquareButton } from "./Buttons";
+import { Color } from "./colors/Color";
+import { ParagraphPrimary } from "./Paragraphs";
 
 const Background = styled.div`
+	position: fixed;
 	height: 100vh;
 	width: 100vw;
-	z-index: 1;
-	position: fixed;
 	top: 0;
 	right: 0;
-	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
-	align-items: center;
+	align-items: end;
 	justify-content: center;
+	background-color: var(--shadow-2);
+	z-index: 1;
 `;
 
 const AddTaskContainer = styled.div`
 	background-color: var(--white);
+	margin: 1.25rem 1.25rem 6.5rem;
+	padding: 1.25rem;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px var(--shadow-1), 0 12px 28px var(--shadow-2);
 `;
 
 export const AddTask = () => {
@@ -81,16 +88,24 @@ export const AddTask = () => {
 					// todayButton="Today"
 					onKeyDown={onEnter}
 				/>
-				<button
+				<SquareButton
 					onClick={() =>
 						dispatch(
 							onAddTask(accessToken, taskInput, deadline, categoryInput, userId)
 						)
 					}
+					backgroundColor={Color.PRIMARY_COLOR}
 				>
-					Add
-				</button>
+					<ParagraphPrimary color={Color.WHITE}>Add task</ParagraphPrimary>
+				</SquareButton>
 			</AddTaskContainer>
 		</Background>
 	);
 };
+
+/*
+<Button onClick={() => setIsAddTaskOpen(!isAddTaskOpen)}>
+<Icon.Add color={Color.WHITE} />
+</Button>
+{isAddTaskOpen && <AddTask />}
+*/

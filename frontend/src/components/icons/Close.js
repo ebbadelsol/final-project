@@ -1,14 +1,14 @@
 /* eslint-disable max-len */
 import React from "react";
 
-export const Close = ({ color = "#222221", ...rest }) => {
+export const Close = ({ color = "#222221", size = "100%", ...rest }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			x="0px"
 			y="0px"
-			width="12"
-			height="12"
+			width={size}
+			height={size}
 			viewBox="0 0 24 24"
 		>
 			<path
