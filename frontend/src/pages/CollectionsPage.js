@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export const HomePage = () => {
+export const CollectionsPage = () => {
 	const accessToken = useSelector((store) => store.user.accessToken);
 	const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ export const HomePage = () => {
 
 	return (
 		<>
-			<h1>Home page</h1>
+			<h1>Collections page</h1>
 		</>
 	);
 };

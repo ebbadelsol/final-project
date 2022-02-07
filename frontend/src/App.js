@@ -9,18 +9,18 @@ import {
 } from "@reduxjs/toolkit";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { todos } from "./reducers/todos";
-import { ui } from "./reducers/ui";
-import { categories } from "./reducers/categories";
-import { user } from "./reducers/user";
-
 import { AccountPage } from "./pages/AccountPage";
 import { CalendarPage } from "./pages/CalendarPage";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { TasksPage } from "./pages/TasksPage";
+import { CollectionsPage } from "./pages/CollectionsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { todos } from "./reducers/todos";
+import { ui } from "./reducers/ui";
+import { categories } from "./reducers/categories";
+import { user } from "./reducers/user";
 
 const reducer = combineReducers({
 	todos: todos.reducer,
@@ -56,11 +56,12 @@ export const App = () => {
 			<BrowserRouter>
 				<Routes>
 					<Route index path="/" element={<HomePage />} />
-					<Route index path="/login" element={<LoginPage />} />
-					<Route index path="/register" element={<RegisterPage />} />
-					<Route index path="/account" element={<AccountPage />} />
+					<Route index path="/collections" element={<CollectionsPage />} />
 					<Route index path="/tasks" element={<TasksPage />} />
 					<Route index path="/calendar" element={<CalendarPage />} />
+					<Route index path="/account" element={<AccountPage />} />
+					<Route index path="/login" element={<LoginPage />} />
+					<Route index path="/register" element={<RegisterPage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</BrowserRouter>

@@ -1,9 +1,11 @@
 import { Close } from "./Close";
 import { Add } from "./Add";
+import { Hamburger } from "./Hamburger";
 
 export const Icons = {
 	Close,
 	Add,
+	Hamburger,
 };
 
 // export const Icon = {
