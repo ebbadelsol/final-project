@@ -10,4 +10,12 @@
 
 	--shadow-1: rgba(0, 0, 0, 0.1);
 	--shadow-2: rgba(0, 0, 0, 0.2);
+
+	--shadow: 0 2px 4px var(--shadow-1), 0 12px 28px var(--shadow-2);
+
+	--borderGrey: 1px solid var(--grey);
+	--borderGreyLight: 1px solid var(--greyLight);
+	--borderGreyLightest: 1px solid var(--greyLightest);
+
+	--roundedCorners: 5px;
 }

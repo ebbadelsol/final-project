@@ -1,23 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-	cursor: pointer;
-`;
-
-const SmallBTN = styled(Button)`
+const SmallBTN = styled.button`
 	position: relative;
 	top: 0.09rem;
 	background-color: var(--white);
-	border: solid 1px var(--grey);
+	border: var(--borderGrey);
 	padding: 0.25rem;
+	border-radius: 50%;
 `;
 
-const BigBTN = styled(Button)`
+const BigBTN = styled.button`
 	position: fixed;
 	bottom: 1.25rem;
 	right: 1.25rem;
@@ -25,17 +18,14 @@ const BigBTN = styled(Button)`
 	height: 4rem;
 	border: none;
 	padding: 1.25rem;
-	box-shadow: 0 2px 4px var(--shadow-1), 0 12px 28px var(--shadow-2);
+	box-shadow: var(--shadow);
 	z-index: 2;
+	border-radius: 50%;
 `;
 
-const SquareBTN = styled(Button)`
-	position: relative;
-	top: 0.09rem;
+const SquareBTN = styled.button`
 	width: 100%;
-	border: none;
-	padding: 0.5rem;
-	border-radius: 5px;
+	margin-top: 0.75rem;
 `;
 
 export const SmallButton = ({ onClick, children, ariaLabel }) => {
@@ -68,12 +58,13 @@ export const SquareButton = ({
 	children,
 	ariaLabel,
 	backgroundColor,
+	border = "none",
 }) => {
 	return (
 		<SquareBTN
 			onClick={onClick}
 			aria-label={ariaLabel}
-			style={{ backgroundColor }}
+			style={{ backgroundColor, border }}
 		>
 			{children}
 		</SquareBTN>

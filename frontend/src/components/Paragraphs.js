@@ -1,7 +1,7 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const TextPrimary = styled.p`
+export const basePrimaryText = css`
 	font-size: 16px;
 	line-height: 1.5;
 	color: var(--black);
@@ -11,18 +11,7 @@ const TextPrimary = styled.p`
 	}
 `;
 
-const Label = styled.label`
-	font-size: 16px;
-	line-height: 1.5;
-	color: var(--black);
-	cursor: pointer;
-
-	@media (min-width: 768px) {
-		font-size: 18px;
-	}
-`;
-
-const TextSecondary = styled.p`
+export const baseSecondaryText = css`
 	font-size: 14px;
 	line-height: 1.5;
 	color: var(--grey);
@@ -30,6 +19,19 @@ const TextSecondary = styled.p`
 	@media (min-width: 768px) {
 		font-size: 15px;
 	}
+`;
+
+const TextPrimary = styled.p`
+	${basePrimaryText}
+`;
+
+const Label = styled.label`
+	${basePrimaryText}
+	cursor: pointer;
+`;
+
+const TextSecondary = styled.p`
+	${baseSecondaryText}
 `;
 
 export const ParagraphPrimary = ({ color, children }) => {

@@ -10,9 +10,10 @@ import { AddTask } from "../components/AddTask";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { showTasks } from "../reducers/todos";
 import { showCategories } from "../reducers/categories";
-import { Icon } from "../components/icons/Icon";
+import { Icons } from "../components/icons/Icons";
 import { Color } from "../components/colors/Color";
 import { BigButton } from "../components/Buttons";
+import { HeadlineSecondary } from "../components/Headlines";
 
 const Container = styled.main`
 	margin: 1.25rem 1.25rem 6.5rem;
@@ -116,7 +117,9 @@ export const TasksPage = () => {
 					<Container>
 						{allDeadlines.map((item) => (
 							<div key={item.deadline}>
-								<h2>{formattedDate(item.deadline)}</h2>
+								<HeadlineSecondary marginTop="1.5rem" marginBottom="0.5rem">
+									{formattedDate(item.deadline)}
+								</HeadlineSecondary>
 								<TaskList tasks={taskByDate(item.deadline)} />
 							</div>
 						))}
@@ -129,9 +132,9 @@ export const TasksPage = () => {
 							}
 						>
 							{isAddTaskOpen ? (
-								<Icon.Close color={Color.WHITE} />
+								<Icons.Close color={Color.WHITE} />
 							) : (
-								<Icon.Add color={Color.WHITE} />
+								<Icons.Add color={Color.WHITE} />
 							)}
 						</BigButton>
 						{isAddTaskOpen && (

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { onToggleTask, onDeleteTask } from "../reducers/todos";
 
-import { Icon } from "./icons/Icon";
+import { Icons } from "./icons/Icons";
 import { Color } from "./colors/Color";
 import { LabelPrimary, ParagraphSecondary } from "./Paragraphs";
 import { SmallButton } from "./Buttons";
@@ -14,26 +14,22 @@ const SingleTask = styled.div`
 	align-items: flex-start;
 	justify-content: space-between;
 	background-color: var(--white);
-	margin: 7px 0;
-	border-radius: 5px;
-	border: 1px solid var(--greyLight);
-	/* min-height: 60px; */
-	/* padding: 15px; */
-	/* min-height: 4.25rem; */
+	margin: 0.5rem 0;
+	border-radius: var(--roundedCorners);
+	border: var(--borderGreyLight);
 	padding: 0.75rem;
 `;
 
 const Checkbox = styled.input`
-	border-radius: 50%;
 	position: relative;
-	top: 6px;
+	top: 0.35rem;
 	cursor: pointer;
 `;
 
 const TextContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	margin: 0 10px;
+	margin: 0 0.75rem;
 	width: 100%;
 `;
 
@@ -64,15 +60,17 @@ export const TaskList = ({ tasks }) => {
 							{item.taskName}
 						</LabelPrimary>
 						<ParagraphSecondary>
-							Category: {item?.category?.categoryName} <br /> Deadline:{" "}
-							{item.deadline}
+							Category: {item?.category?.categoryName}
+							{/* <br /> Deadline:{" "} */}
+							{/* Remove break and deadline */}
+							{/* {item.deadline} */}
 						</ParagraphSecondary>
 					</TextContainer>
 					<SmallButton
 						onClick={() => dispatch(onDeleteTask(accessToken, item._id))}
 						ariaLabel="Delete task"
 					>
-						<Icon.Close size="0.75rem" color={Color.GREY} />
+						<Icons.Close size="0.75rem" color={Color.GREY} />
 					</SmallButton>
 				</SingleTask>
 			))}
