@@ -8,12 +8,12 @@ import { Header } from "../components/Header";
 import { TaskList } from "../components/TaskList";
 import { AddTask } from "../components/AddTask";
 import { LoadingIndicator } from "../components/LoadingIndicator";
-import { showTasks } from "../reducers/todos";
-import { showCategories } from "../reducers/categories";
 import { Icons } from "../components/icons/Icons";
 import { Color } from "../components/colors/Color";
 import { BigButton } from "../components/Buttons";
 import { HeadlineSecondary } from "../components/Headlines";
+import { showTasks } from "../reducers/todos";
+import { showCategories } from "../reducers/categories";
 
 const Container = styled.main`
 	margin: 1.25rem 1.25rem 6.5rem;
@@ -28,7 +28,7 @@ const Container = styled.main`
 `;
 
 export const TasksPage = () => {
-	const loading = useSelector((state) => state.ui.loading);
+	const loading = useSelector((store) => store.ui.loading);
 	const tasks = useSelector((store) => store.todos.items);
 	const accessToken = useSelector((store) => store.user.accessToken);
 	const userId = useSelector((store) => store.user.userId);

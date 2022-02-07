@@ -5,10 +5,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { onLoginOrRegister } from "../reducers/user";
 
 export const LoginPage = () => {
+	const accessToken = useSelector((store) => store.user.accessToken);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [mode, setMode] = useState("signup");
-	const accessToken = useSelector((store) => store.user.accessToken);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();

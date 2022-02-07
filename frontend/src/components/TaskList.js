@@ -2,12 +2,11 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { onToggleTask, onDeleteTask } from "../reducers/todos";
-
 import { Icons } from "./icons/Icons";
 import { Color } from "./colors/Color";
 import { LabelPrimary, ParagraphSecondary } from "./Paragraphs";
 import { SmallButton } from "./Buttons";
+import { onToggleTask, onDeleteTask } from "../reducers/todos";
 
 const SingleTask = styled.div`
 	display: flex;
@@ -61,9 +60,6 @@ export const TaskList = ({ tasks }) => {
 						</LabelPrimary>
 						<ParagraphSecondary>
 							Category: {item?.category?.categoryName}
-							{/* <br /> Deadline:{" "} */}
-							{/* Remove break and deadline */}
-							{/* {item.deadline} */}
 						</ParagraphSecondary>
 					</TextContainer>
 					<SmallButton

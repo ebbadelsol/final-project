@@ -1,14 +1,14 @@
 import React, { useState, forwardRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
-import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
+import styled from "styled-components";
 
-import { onAddTask } from "../reducers/todos";
 import { SquareButton } from "./Buttons";
 import { Color } from "./colors/Color";
 import { ParagraphPrimary } from "./Paragraphs";
 import { HeadlinePrimary } from "./Headlines";
+import { onAddTask } from "../reducers/todos";
 
 const Background = styled.div`
 	position: fixed;
@@ -55,7 +55,7 @@ const DateButton = styled.button`
 export const AddTask = ({ setIsAddTaskOpen, isAddTaskOpen }) => {
 	const accessToken = useSelector((store) => store.user.accessToken);
 	const userId = useSelector((store) => store.user.userId);
-	const categories = useSelector((state) => state.categories);
+	const categories = useSelector((store) => store.categories);
 	const [taskInput, setTaskInput] = useState("");
 	const [categoryInput, setCategoryInput] = useState("");
 	const [deadline, setDeadline] = useState(new Date());

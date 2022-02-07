@@ -118,7 +118,7 @@ export const onToggleTask = (accessToken, taskId, isCompleted) => {
 export const onAddTask = (
 	accessToken,
 	taskInput,
-	/*setTaskInput,*/ deadline,
+	deadline,
 	categoryInput,
 	userId
 ) => {
@@ -147,6 +147,5 @@ export const onAddTask = (
 				}
 			})
 			.finally(() => dispatch(showTasksStopLoading(accessToken, userId)));
-		// setTaskInput("");
 	};
 };
