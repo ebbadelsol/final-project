@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { API_URL } from "../utils/constants";
+import { ui } from "./ui";
+
 export const user = createSlice({
 	name: "user",
 	initialState: {
@@ -28,3 +31,39 @@ export const user = createSlice({
 		},
 	},
 });
+
+export const onLoginOrRegister = (username, password, mode, batch) => {
+	// batch might be unnecessary
+	return (dispatch) => {
+		dispatch(ui.actions.setLoading(true));
+
+		const options = {
+			method: "POST",
+			body: JSON.stringify({ username, password }),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+
+		fetch(API_URL(mode), options)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					batch(() => {
+						dispatch(user.actions.setUserId(data.response.userId));
+						dispatch(user.actions.setUsername(data.response.username));
+						dispatch(user.actions.setAccessToken(data.response.accessToken));
+						dispatch(user.actions.setError(null));
+					});
+				} else {
+					batch(() => {
+						dispatch(user.actions.setUserId(null));
+						dispatch(user.actions.setUsername(null));
+						dispatch(user.actions.setAccessToken(null));
+						dispatch(user.actions.setError(data.response));
+					});
+				}
+			})
+			.finally(setTimeout(() => dispatch(ui.actions.setLoading(false)), 400));
+	};
+};
