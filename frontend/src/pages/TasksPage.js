@@ -34,7 +34,7 @@ export const TasksPage = () => {
 	const userId = useSelector((store) => store.user.userId);
 	const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
-	// const lateDeadlines = [];
+	const lateDeadlines = [];
 	const allDeadlines = [];
 
 	const dispatch = useDispatch();
@@ -54,6 +54,7 @@ export const TasksPage = () => {
 		dispatch(showCategories());
 	}, [dispatch]);
 
+	// Gives you a date (today + number)
 	const dateGenerator = (number) =>
 		dayjs(new Date().setDate(new Date().getDate() + number)).format(
 			"YYYY-MM-DD"
@@ -62,8 +63,10 @@ export const TasksPage = () => {
 	const dateFilter = (date) => (item) =>
 		dayjs(item.deadline).format("YYYY-MM-DD") === date;
 
+	// Filter all tasks by a specific date
 	const taskByDate = (date) => tasks.filter(dateFilter(date));
 
+	// Gives you a true or false value depending on if the date has passed or not
 	const isLate = (date) => {
 		if (dayjs(new Date()).format("YYYY-MM-DD") === date) {
 			return false;
@@ -72,6 +75,7 @@ export const TasksPage = () => {
 		}
 	};
 
+	// Formattes the date differently depending on how close the deadline is to the current date
 	const formattedDate = (deadline) => {
 		if (isLate(deadline)) {
 			return "Late";
@@ -92,7 +96,24 @@ export const TasksPage = () => {
 		}
 	};
 
-	tasks.forEach((item) => {
+	// Returns the deadline if it has passed
+	const passedDate = (deadline) => {
+		if (isLate(deadline)) {
+			return deadline;
+		}
+	};
+
+	// Filter out all the late deadlines (including todays date). Why does this include todays date? I have already taken away todays date from isLate function on line 70.
+	const filterLateDeadlines = tasks.filter(
+		(item) => item.deadline === passedDate(item.deadline)
+	);
+
+	const filterDeadlinesOnTime = tasks.filter(
+		(item) => item.deadline !== passedDate(item.deadline)
+	);
+
+	// Adds all existing deadlines to allDeadlines array. (It also checks if a deadline with the same date already exists in the array and in that case returns nothing).
+	filterDeadlinesOnTime.forEach((item) => {
 		if (
 			allDeadlines.find(
 				(newItem) =>
@@ -108,6 +129,33 @@ export const TasksPage = () => {
 		});
 	});
 
+	// Adds all late deadlines to the lateDeadlines array and exclude todays date. (It also checks if a deadline with the same date already exists in the array and in that case returns nothing).
+	filterLateDeadlines.forEach((item) => {
+		if (
+			lateDeadlines.find(
+				(newItem) =>
+					dayjs(newItem.deadline).format("YYYY-MM-DD") ===
+					dayjs(item.deadline).format("YYYY-MM-DD")
+			)
+		) {
+			return;
+		}
+
+		if (
+			dayjs(item.deadline).format("YYYY-MM-DD") !== dayjs().format("YYYY-MM-DD")
+		) {
+			lateDeadlines.push({
+				deadline: dayjs(item.deadline).format("YYYY-MM-DD"),
+			});
+		}
+		return lateDeadlines;
+	});
+
+	// console.log(lateDeadlines.map((item) => item.deadline));
+	// console.log("Late deadlines", lateDeadlines);
+	// console.log("All deadlines", allDeadlines);
+	// console.log("filterLateDeadlines", filterLateDeadlines);
+
 	return (
 		<>
 			<LoadingIndicator />
@@ -115,6 +163,13 @@ export const TasksPage = () => {
 				<>
 					<Header />
 					<Container>
+						<HeadlineSecondary marginTop="1.5rem" marginBottom="0.5rem">
+							Late
+						</HeadlineSecondary>
+						{lateDeadlines.map((item) => (
+							<TaskList key={item.deadline} tasks={taskByDate(item.deadline)} />
+						))}
+
 						{allDeadlines.map((item) => (
 							<div key={item.deadline}>
 								<HeadlineSecondary marginTop="1.5rem" marginBottom="0.5rem">

@@ -59,7 +59,8 @@ export const TaskList = ({ tasks }) => {
 							{item.taskName}
 						</LabelPrimary>
 						<ParagraphSecondary>
-							{item?.category?.categoryName}
+							{item?.category?.categoryName} <br />
+							{item.deadline}
 						</ParagraphSecondary>
 					</TextContainer>
 					<SmallButton
