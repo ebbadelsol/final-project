@@ -19,13 +19,14 @@ const BigBTN = styled.button`
 	border: none;
 	padding: 1.25rem;
 	box-shadow: var(--shadow);
-	z-index: 2;
+	z-index: 3;
 	border-radius: 50%;
 `;
 
 const SquareBTN = styled.button`
 	width: 100%;
 	margin-top: 0.75rem;
+	border-radius: var(--roundedCorners);
 `;
 
 export const SmallButton = ({ onClick, children, ariaLabel }) => {

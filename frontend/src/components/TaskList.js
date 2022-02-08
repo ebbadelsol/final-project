@@ -59,7 +59,7 @@ export const TaskList = ({ tasks }) => {
 							{item.taskName}
 						</LabelPrimary>
 						<ParagraphSecondary>
-							Category: {item?.category?.categoryName}
+							{item?.category?.categoryName}
 						</ParagraphSecondary>
 					</TextContainer>
 					<SmallButton

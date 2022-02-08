@@ -20,7 +20,7 @@ const Background = styled.div`
 	justify-content: center;
 	align-items: end;
 	background-color: var(--shadow-2);
-	z-index: 1;
+	z-index: 2;
 
 	@media (min-width: 768px) {
 		align-items: center;
@@ -46,6 +46,8 @@ const AddTaskContainer = styled.div`
 const DateButton = styled.button`
 	width: 100%;
 	justify-content: start;
+	border: var(--borderGreyLight);
+	border-radius: var(--roundedCorners);
 
 	:hover {
 		background-color: var(--greyLightest);

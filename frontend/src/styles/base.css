@@ -39,15 +39,16 @@ code {
 		"Courier New", monospace;
 }
 
+/* Remove some of the button styles from the base */
+
 button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background: none;
 	background-color: none;
-	border: var(--borderGreyLight);
+	border: none;
 	padding: 0.75rem;
-	border-radius: var(--roundedCorners);
 	cursor: pointer;
 }
 
