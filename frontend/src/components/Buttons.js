@@ -6,7 +6,7 @@ const SmallBTN = styled.button`
 	top: 0.09rem;
 	background-color: var(--white);
 	border: var(--borderGrey);
-	padding: 0.25rem;
+	padding: 0.1rem;
 	border-radius: 50%;
 `;
 
@@ -66,6 +66,7 @@ export const SquareButton = ({
 			onClick={onClick}
 			aria-label={ariaLabel}
 			style={{ backgroundColor, border }}
+			// style={{ backgroundColor:{bgColor}, border }}
 		>
 			{children}
 		</SquareBTN>

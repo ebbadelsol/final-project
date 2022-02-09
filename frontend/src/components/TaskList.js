@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
@@ -6,7 +6,8 @@ import { Icons } from "./icons/Icons";
 import { Color } from "./colors/Color";
 import { LabelPrimary, ParagraphSecondary } from "./Paragraphs";
 import { SmallButton } from "./Buttons";
-import { onToggleTask, onDeleteTask } from "../reducers/todos";
+import { onToggleTask /*onDeleteTask*/ } from "../reducers/todos";
+import { OptionsMenu } from "./OptionsMenu";
 
 const SingleTask = styled.div`
 	display: flex;
@@ -34,6 +35,7 @@ const TextContainer = styled.div`
 
 export const TaskList = ({ tasks }) => {
 	const accessToken = useSelector((store) => store.user.accessToken);
+	const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 	const dispatch = useDispatch();
 
 	return (
@@ -63,14 +65,30 @@ export const TaskList = ({ tasks }) => {
 							{item.deadline}
 						</ParagraphSecondary>
 					</TextContainer>
+					{isOptionsOpen && (
+						<OptionsMenu accessToken={accessToken} id={item._id} />
+					)}
 					<SmallButton
-						onClick={() => dispatch(onDeleteTask(accessToken, item._id))}
-						ariaLabel="Delete task"
+						onClick={() => setIsOptionsOpen(!isOptionsOpen)}
+						ariaLabel="More options"
 					>
-						<Icons.Close size="0.75rem" color={Color.GREY} />
+						{isOptionsOpen ? (
+							<Icons.Close size="1rem" padding="0.1rem" color={Color.GREY} />
+						) : (
+							<Icons.More size="1rem" color={Color.GREY} />
+						)}
 					</SmallButton>
 				</SingleTask>
 			))}
 		</>
 	);
 };
+
+/*
+<SmallButton
+	onClick={() => dispatch(onDeleteTask(accessToken, item._id))}
+	ariaLabel="Delete task"
+>
+	<Icons.Close size="0.75rem" color={Color.GREY} />
+</SmallButton>
+*/
