@@ -19,12 +19,6 @@ const app = express();
 /************************** Schemas **************************/
 
 const UserSchema = new mongoose.Schema({
-	// email: {
-	// 	type: String,
-	// 	unique: true,
-	// 	required: true,
-	// 	trim: true,
-	// },
 	username: {
 		type: String,
 		unique: true,
@@ -82,10 +76,6 @@ const TaskSchema = new mongoose.Schema({
 	isCompleted: {
 		type: Boolean,
 		default: false,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
 	},
 });
 
@@ -155,7 +145,7 @@ app.get("/", (res) => {
 
 // Signup
 app.post("/signup", async (req, res) => {
-	const { /*email,*/ username, password } = req.body;
+	const { username, password } = req.body;
 
 	try {
 		const salt = bcrypt.genSaltSync();
@@ -170,7 +160,6 @@ app.post("/signup", async (req, res) => {
 		}
 
 		const newUser = await new User({
-			// email,
 			username,
 			password: bcrypt.hashSync(password, salt),
 		}).save();
@@ -178,7 +167,6 @@ app.post("/signup", async (req, res) => {
 		res.status(201).json({
 			response: {
 				userId: newUser._id,
-				// email: newUser.email,
 				username: newUser.username,
 				accessToken: newUser.accessToken,
 			},
@@ -193,7 +181,7 @@ app.post("/signup", async (req, res) => {
 
 // Signin
 app.post("/signin", async (req, res) => {
-	const { /*email,*/ username, password } = req.body;
+	const { username, password } = req.body;
 
 	try {
 		const user = await User.findOne({ username });
@@ -202,7 +190,6 @@ app.post("/signin", async (req, res) => {
 			res.status(200).json({
 				response: {
 					userId: user._id,
-					// email: user.email,
 					username: user.username,
 					accessToken: user.accessToken,
 				},
@@ -243,9 +230,9 @@ app.post("/tasks", async (req, res) => {
 });
 
 // Category
-// app.post("/tasks/", authenticateUser);
+// app.post("/category", authenticateUser);
 app.post("/category", async (req, res) => {
-	const { categoryName } = req.body;
+	const { categoryName /*user*/ } = req.body;
 	try {
 		const newCategory = await new Category({ categoryName }).save();
 		res.status(201).json({ response: newCategory, success: true });
@@ -263,8 +250,7 @@ app.get("/tasks/:userId", async (req, res) => {
 	try {
 		const tasks = await Task.find({ user: userId })
 			.populate("category")
-			.sort({ createdAt: "asc" });
-		// .sort({ deadline: "asc" });
+			.sort({ deadline: "asc" });
 		res.status(200).json({ response: tasks, success: true });
 	} catch (error) {
 		res.status(400).json({ response: error, success: false });
@@ -310,7 +296,7 @@ app.patch("/tasks/:taskId/isCompleted", async (req, res) => {
 	}
 });
 
-// PATCH: Updating taskName, (category?) or deadline or all
+// PATCH: Updating tasks
 app.patch("/tasks/:taskId", authenticateUser);
 app.patch("/tasks/:taskId", async (req, res) => {
 	const { taskId } = req.params;
