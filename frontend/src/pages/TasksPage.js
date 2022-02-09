@@ -14,6 +14,7 @@ import { BigButton } from "../components/Buttons";
 import { HeadlineSecondary } from "../components/Headlines";
 import { showTasks } from "../reducers/todos";
 import { showCategories } from "../reducers/categories";
+import { onAddTask } from "../reducers/todos";
 
 const Container = styled.main`
 	margin: 1.25rem 1.25rem 6.5rem;
@@ -35,7 +36,7 @@ export const TasksPage = () => {
 	const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
 	const lateDeadlines = [];
-	const allDeadlines = [];
+	const onTimeDeadlines = [];
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -68,7 +69,7 @@ export const TasksPage = () => {
 
 	// Gives you a true or false value depending on if the date has passed or not
 	const isLate = (date) => {
-		if (dayjs(new Date()).format("YYYY-MM-DD") === date) {
+		if (dayjs().format("YYYY-MM-DD") === date) {
 			return false;
 		} else {
 			return dayjs().isAfter(dayjs(date));
@@ -96,26 +97,18 @@ export const TasksPage = () => {
 		}
 	};
 
-	// Returns the deadline if it has passed
-	const passedDate = (deadline) => {
-		if (isLate(deadline)) {
-			return deadline;
-		}
-	};
-
-	// Filter out all the late deadlines (including todays date). Why does this include todays date? I have already taken away todays date from isLate function on line 70.
-	const filterLateDeadlines = tasks.filter(
-		(item) => item.deadline === passedDate(item.deadline)
+	const filterLateDeadlines = tasks.filter((item) =>
+		isLate(dayjs(item.deadline).format("YYYY-MM-DD"))
 	);
 
 	const filterDeadlinesOnTime = tasks.filter(
-		(item) => item.deadline !== passedDate(item.deadline)
+		(item) => !isLate(dayjs(item.deadline).format("YYYY-MM-DD"))
 	);
 
-	// Adds all existing deadlines to allDeadlines array. (It also checks if a deadline with the same date already exists in the array and in that case returns nothing).
+	// Adds all existing deadlines to onTimeDeadlines array. (It also checks if a deadline with the same date already exists in the array and in that case returns nothing).
 	filterDeadlinesOnTime.forEach((item) => {
 		if (
-			allDeadlines.find(
+			onTimeDeadlines.find(
 				(newItem) =>
 					dayjs(newItem.deadline).format("YYYY-MM-DD") ===
 					dayjs(item.deadline).format("YYYY-MM-DD")
@@ -124,7 +117,7 @@ export const TasksPage = () => {
 			return;
 		}
 
-		allDeadlines.push({
+		onTimeDeadlines.push({
 			deadline: dayjs(item.deadline).format("YYYY-MM-DD"),
 		});
 	});
@@ -151,11 +144,6 @@ export const TasksPage = () => {
 		return lateDeadlines;
 	});
 
-	// console.log(lateDeadlines.map((item) => item.deadline));
-	// console.log("Late deadlines", lateDeadlines);
-	// console.log("All deadlines", allDeadlines);
-	// console.log("filterLateDeadlines", filterLateDeadlines);
-
 	return (
 		<>
 			<LoadingIndicator />
@@ -163,14 +151,16 @@ export const TasksPage = () => {
 				<>
 					<Header />
 					<Container>
-						<HeadlineSecondary marginTop="1.5rem" marginBottom="0.5rem">
-							Late
-						</HeadlineSecondary>
+						{lateDeadlines.length !== 0 && (
+							<HeadlineSecondary marginTop="1.5rem" marginBottom="0.5rem">
+								Late
+							</HeadlineSecondary>
+						)}
 						{lateDeadlines.map((item) => (
 							<TaskList key={item.deadline} tasks={taskByDate(item.deadline)} />
 						))}
 
-						{allDeadlines.map((item) => (
+						{onTimeDeadlines.map((item) => (
 							<div key={item.deadline}>
 								<HeadlineSecondary marginTop="1.5rem" marginBottom="0.5rem">
 									{formattedDate(item.deadline)}
@@ -194,6 +184,7 @@ export const TasksPage = () => {
 						</BigButton>
 						{isAddTaskOpen && (
 							<AddTask
+								fetchFunction={onAddTask}
 								setIsAddTaskOpen={setIsAddTaskOpen}
 								isAddTaskOpen={isAddTaskOpen}
 							/>
