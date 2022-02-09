@@ -73,9 +73,9 @@ export const TaskList = ({ tasks }) => {
 						ariaLabel="More options"
 					>
 						{isOptionsOpen ? (
-							<Icons.Close size="1rem" padding="0.1rem" color={Color.GREY} />
+							<Icons.Close size="1em" padding="0.1em" color={Color.GREY} />
 						) : (
-							<Icons.More size="1rem" color={Color.GREY} />
+							<Icons.More size="1em" color={Color.GREY} />
 						)}
 					</SmallButton>
 				</SingleTask>
