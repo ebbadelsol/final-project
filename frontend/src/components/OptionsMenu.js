@@ -4,25 +4,27 @@ import styled from "styled-components";
 
 import { AddTask } from "./AddTask";
 import { onDeleteTask } from "../reducers/todos";
-import { onAddTask } from "../reducers/todos";
+import { onUpdateTask } from "../reducers/todos";
 
-const Box = styled.div`
+const MenuOptions = styled.div`
 	background-color: white;
-	position: relative;
+	right: 0;
+	position: absolute;
 	box-shadow: var(--shadow);
 	border: var(--borderGreyLight);
 	border-radius: var(--roundedCorners);
+	z-index: 1;
 `;
 
-export const OptionsMenu = ({ accessToken, id }) => {
+export const OptionsMenu = ({ accessToken, taskId }) => {
 	const [isEditOpen, setIsEditOpen] = useState(false);
 	const dispatch = useDispatch();
 
 	return (
 		<>
-			<Box>
+			<MenuOptions>
 				<button
-					onClick={() => dispatch(onDeleteTask(accessToken, id))}
+					onClick={() => dispatch(onDeleteTask(accessToken, taskId))}
 					aria-label="Delete task"
 				>
 					Delete
@@ -33,14 +35,8 @@ export const OptionsMenu = ({ accessToken, id }) => {
 				>
 					Edit
 				</button>
-			</Box>
-			{isEditOpen && (
-				<AddTask
-					fetchFunction={onAddTask}
-					// setIsAddTaskOpen={setIsAddTaskOpen}
-					// isAddTaskOpen={isAddTaskOpen}
-				/>
-			)}
+			</MenuOptions>
+			{isEditOpen && <AddTask fetchFunction={onUpdateTask} taskId={taskId} />}
 		</>
 	);
 };

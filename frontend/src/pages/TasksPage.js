@@ -14,7 +14,7 @@ import { BigButton } from "../components/Buttons";
 import { HeadlineSecondary } from "../components/Headlines";
 import { showTasks } from "../reducers/todos";
 import { showCategories } from "../reducers/categories";
-import { onAddTask } from "../reducers/todos";
+import { onCreateTask } from "../reducers/todos";
 
 const Container = styled.main`
 	margin: 1.25rem 1.25rem 6.5rem;
@@ -184,7 +184,7 @@ export const TasksPage = () => {
 						</BigButton>
 						{isAddTaskOpen && (
 							<AddTask
-								fetchFunction={onAddTask}
+								fetchFunction={onCreateTask}
 								setIsAddTaskOpen={setIsAddTaskOpen}
 								isAddTaskOpen={isAddTaskOpen}
 							/>

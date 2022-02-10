@@ -8,7 +8,7 @@ import { SquareButton } from "./Buttons";
 import { Color } from "./colors/Color";
 import { ParagraphPrimary } from "./Paragraphs";
 import { HeadlinePrimary } from "./Headlines";
-// import { onAddTask } from "../reducers/todos";
+// import { onCreateTask } from "../reducers/todos";
 
 const Background = styled.div`
 	position: fixed;
@@ -54,7 +54,12 @@ const DateButton = styled.button`
 	}
 `;
 
-export const AddTask = ({ fetchFunction, setIsAddTaskOpen, isAddTaskOpen }) => {
+export const AddTask = ({
+	fetchFunction,
+	setIsAddTaskOpen,
+	isAddTaskOpen,
+	taskId,
+}) => {
 	const accessToken = useSelector((store) => store.user.accessToken);
 	const userId = useSelector((store) => store.user.userId);
 	const categories = useSelector((store) => store.categories);
@@ -66,7 +71,14 @@ export const AddTask = ({ fetchFunction, setIsAddTaskOpen, isAddTaskOpen }) => {
 
 	const handleClick = () => {
 		dispatch(
-			fetchFunction(accessToken, taskInput, deadline, categoryInput, userId)
+			fetchFunction(
+				accessToken,
+				taskInput,
+				deadline,
+				categoryInput,
+				userId,
+				taskId
+			)
 		);
 		const closeContainer = () => setIsAddTaskOpen(!isAddTaskOpen);
 		closeContainer();
