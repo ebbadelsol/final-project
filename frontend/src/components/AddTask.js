@@ -8,7 +8,6 @@ import { SquareButton } from "./Buttons";
 import { Color } from "./colors/Color";
 import { ParagraphPrimary } from "./Paragraphs";
 import { HeadlinePrimary } from "./Headlines";
-// import { onCreateTask } from "../reducers/todos";
 
 const Background = styled.div`
 	position: fixed;
