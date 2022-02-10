@@ -115,7 +115,7 @@ export const onToggleTask = (accessToken, taskId, isCompleted) => {
 	};
 };
 
-export const onAddTask = (
+export const onCreateTask = (
 	accessToken,
 	taskInput,
 	deadline,
@@ -138,6 +138,42 @@ export const onAddTask = (
 			},
 		};
 		fetch(API_URL("tasks"), options)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.success) {
+					dispatch(todos.actions.setError(null));
+				} else {
+					dispatch(todos.actions.setError(data.response));
+				}
+			})
+			.finally(() => dispatch(showTasksStopLoading(accessToken, userId)));
+	};
+};
+
+export const onUpdateTask = (
+	accessToken,
+	taskInput,
+	deadline,
+	categoryInput,
+	userId,
+	taskId
+) => {
+	return (dispatch) => {
+		dispatch(ui.actions.setLoading(true));
+		const options = {
+			method: "PATCH",
+			body: JSON.stringify({
+				taskName: taskInput,
+				deadline: deadline,
+				categoryId: categoryInput,
+				userId: userId,
+			}),
+			headers: {
+				Authorization: accessToken,
+				"Content-Type": "application/json",
+			},
+		};
+		fetch(API_URL(`tasks/${taskId}`), options)
 			.then((res) => res.json())
 			.then((data) => {
 				if (data.success) {
