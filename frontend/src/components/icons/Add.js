@@ -18,5 +18,3 @@ export const Add = ({ color = "#222221", size = "100%", ...rest }) => {
 		</svg>
 	);
 };
-
-// https://icons8.com/icon/3220/plus-%2B

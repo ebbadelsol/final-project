@@ -66,7 +66,6 @@ export const SquareButton = ({
 			onClick={onClick}
 			aria-label={ariaLabel}
 			style={{ backgroundColor, border }}
-			// style={{ backgroundColor:{bgColor}, border }}
 		>
 			{children}
 		</SquareBTN>

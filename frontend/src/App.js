@@ -29,8 +29,6 @@ const reducer = combineReducers({
 	user: user.reducer,
 });
 
-// const store = configureStore({ reducer });
-
 const persistedStateJSON = localStorage.getItem("todos");
 const persistedState = persistedStateJSON ? JSON.parse(persistedStateJSON) : {};
 

@@ -33,7 +33,6 @@ export const user = createSlice({
 });
 
 export const onLoginOrRegister = (username, password, mode, batch) => {
-	// batch might be unnecessary
 	return (dispatch) => {
 		dispatch(ui.actions.setLoading(true));
 

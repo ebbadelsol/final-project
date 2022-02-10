@@ -12,27 +12,6 @@ const PrimaryHeadline = styled.h1`
 	}
 `;
 
-// const PrimaryHeadline = styled.h1`
-// 	font-size: 24px;
-// 	line-height: 1.1;
-// 	color: var(--black);
-
-// 	@media (min-width: 768px) {
-// 		font-size: 28px;
-// 	}
-// `;
-
-// const SecondaryHeadline = styled.h2`
-// 	font-size: 21px;
-// 	line-height: 1.2;
-// 	color: var(--black);
-// 	font-weight: 700;
-
-// 	@media (min-width: 768px) {
-// 		font-size: 24px;
-// 	}
-// `;
-
 const SecondaryHeadline = styled.h2`
 	font-size: 20px;
 	line-height: 1.4;
@@ -43,17 +22,6 @@ const SecondaryHeadline = styled.h2`
 		font-size: 23px;
 	}
 `;
-
-// const SecondaryHeadline = styled.h2`
-// 	font-size: 18px;
-// 	line-height: 1.3;
-// 	color: var(--black);
-// 	font-weight: 700;
-
-// 	@media (min-width: 768px) {
-// 		font-size: 20px;
-// 	}
-// `;
 
 const SmallHeadline = styled.h3`
 	font-size: 18px;
