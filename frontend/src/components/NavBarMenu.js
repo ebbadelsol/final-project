@@ -46,6 +46,9 @@ const NavBar = styled.nav`
 		text-decoration: none;
 		color: var(--black);
 		font-weight: 600;
+		:hover {
+			background-color: var(--greyLightest);
+		}
 	}
 
 	> button {
