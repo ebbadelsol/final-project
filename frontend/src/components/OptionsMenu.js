@@ -8,7 +8,7 @@ import { onUpdateTask } from "../reducers/todos";
 
 const MenuOptions = styled.div`
 	background-color: white;
-	right: 0;
+	right: 2.25rem;
 	position: absolute;
 	box-shadow: var(--shadow);
 	border: var(--borderGreyLight);
