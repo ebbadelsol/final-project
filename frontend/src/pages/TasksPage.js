@@ -185,8 +185,8 @@ export const TasksPage = () => {
 						{isAddTaskOpen && (
 							<AddTask
 								fetchFunction={onCreateTask}
-								setIsAddTaskOpen={setIsAddTaskOpen}
-								isAddTaskOpen={isAddTaskOpen}
+								setIsOpen={setIsAddTaskOpen}
+								isOpen={isAddTaskOpen}
 								headline={"What are you planning?"}
 								buttonText={"Create task"}
 							/>

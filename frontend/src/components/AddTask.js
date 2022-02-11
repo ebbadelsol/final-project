@@ -55,8 +55,8 @@ const DateButton = styled.button`
 
 export const AddTask = ({
 	fetchFunction,
-	setIsAddTaskOpen,
-	isAddTaskOpen,
+	setIsOpen,
+	isOpen,
 	taskId,
 	headline,
 	buttonText,
@@ -81,7 +81,7 @@ export const AddTask = ({
 				taskId
 			)
 		);
-		const closeContainer = () => setIsAddTaskOpen(!isAddTaskOpen);
+		const closeContainer = () => setIsOpen(!isOpen);
 		closeContainer();
 	};
 
