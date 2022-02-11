@@ -1,7 +1,9 @@
 /* eslint-disable max-len */
 import React from "react";
 
-export const More = ({ color = "#222221", size = "100%", ...rest }) => {
+import { Color } from "../colors/Color";
+
+export const More = ({ color = Color.BLACK, size = "100%", ...rest }) => {
 	return (
 		<svg
 			id="Layer_1"

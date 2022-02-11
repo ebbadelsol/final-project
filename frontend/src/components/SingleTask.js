@@ -64,7 +64,7 @@ export const SingleTask = ({ item }) => {
 					{item.taskName}
 				</LabelPrimary>
 				<ParagraphSecondary>
-					{item.category.categoryName} Collection
+					{item.category.categoryName} collection
 				</ParagraphSecondary>
 			</TextContainer>
 			<SmallButton

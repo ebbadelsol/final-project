@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import React from "react";
 
+import { Color } from "../colors/Color";
+
 // export const Hamburger = ({ color = "#222221", size = "100%", ...rest }) => {
 // 	return (
 // 		<svg
@@ -19,7 +21,7 @@ import React from "react";
 // 	);
 // };
 
-export const Hamburger = ({ color = "#222221", size = "100%", ...rest }) => {
+export const Hamburger = ({ color = Color.BLACK, size = "100%", ...rest }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

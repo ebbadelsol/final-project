@@ -1,7 +1,9 @@
 /* eslint-disable max-len */
 import React from "react";
 
-export const Add = ({ color = "#222221", size = "100%", ...rest }) => {
+import { Color } from "../colors/Color";
+
+export const Add = ({ color = Color.BLACK, size = "100%", ...rest }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

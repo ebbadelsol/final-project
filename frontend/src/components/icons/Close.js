@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
 import React from "react";
 
+import { Color } from "../colors/Color";
+
 export const Close = ({
-	color = "#222221",
+	color = Color.BLACK,
 	size = "100%",
 	padding,
 	...rest

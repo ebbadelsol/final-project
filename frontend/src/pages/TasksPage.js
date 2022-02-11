@@ -19,7 +19,7 @@ import { onCreateTask } from "../reducers/todos";
 const Container = styled.main`
 	margin: 1.25rem 1.25rem 6.5rem;
 
-	@media (min-width: 700px) {
+	@media (min-width: 768px) {
 		margin: 1.75rem 15vw;
 	}
 

@@ -11,7 +11,7 @@ const HeaderSection = styled.header`
 	padding: 1.75rem 1.25rem;
 	color: var(--white);
 
-	@media (min-width: 700px) {
+	@media (min-width: 768px) {
 		padding: 1.75rem 15vw;
 	}
 
