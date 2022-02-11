@@ -9,10 +9,6 @@ const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/taskAPI";
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = Promise;
 
-// Defines the port the app will run on. Defaults to 8080, but can be
-// overridden when starting the server. For example:
-//
-//   PORT=9000 npm start
 const port = process.env.PORT || 8080;
 const app = express();
 
@@ -87,34 +83,7 @@ const Task = mongoose.model("Task", TaskSchema);
 
 /********** Middlewares to enable cors and json body parsing **********/
 
-// Choose one out of three options below
-
-// 1. Allows all domains:
 app.use(cors());
-
-// 2. Allows only one specific domain:
-// app.use(
-// 	cors({
-// 		origin: "https://example1.com",
-// 	})
-// );
-
-// 3. Allows multiple domains
-// const allowedDomains = [
-// 	"https://example1.com",
-// 	"https://example2.com",
-// ];
-// app.use(
-// 	cors({
-// 		origin: (origin, callback) => {
-// 			if (allowedDomains.includes(origin)) {
-// 				return callback(null, true);
-// 			} else {
-// 				return callback(new Error("This domain is not allowed"), false);
-// 			}
-// 		},
-// 	})
-// );
 
 app.use(express.json());
 
@@ -143,7 +112,6 @@ app.get("/", (res) => {
 
 /************************** POST **************************/
 
-// Signup
 app.post("/signup", async (req, res) => {
 	const { username, password } = req.body;
 
@@ -179,7 +147,6 @@ app.post("/signup", async (req, res) => {
 	}
 });
 
-// Signin
 app.post("/signin", async (req, res) => {
 	const { username, password } = req.body;
 
@@ -208,7 +175,6 @@ app.post("/signin", async (req, res) => {
 	}
 });
 
-// Tasks
 app.post("/tasks", authenticateUser);
 app.post("/tasks", async (req, res) => {
 	const { taskName, categoryId, deadline, userId } = req.body;
@@ -229,10 +195,8 @@ app.post("/tasks", async (req, res) => {
 	}
 });
 
-// Category
-// app.post("/category", authenticateUser);
 app.post("/category", async (req, res) => {
-	const { categoryName /*user*/ } = req.body;
+	const { categoryName } = req.body;
 	try {
 		const newCategory = await new Category({ categoryName }).save();
 		res.status(201).json({ response: newCategory, success: true });
@@ -257,7 +221,6 @@ app.get("/tasks/:userId", async (req, res) => {
 	}
 });
 
-// app.get("/category", authenticateUser);
 app.get("/category", async (req, res) => {
 	try {
 		const category = await Category.find();
@@ -267,7 +230,6 @@ app.get("/category", async (req, res) => {
 	}
 });
 
-// app.get("/tasks/:categoryId", authenticateUser);
 app.get("/tasks/:categoryId", async (req, res) => {
 	const { categoryId } = req.params;
 	try {
@@ -296,7 +258,6 @@ app.patch("/tasks/:taskId/isCompleted", async (req, res) => {
 	}
 });
 
-// PATCH: Updating tasks
 app.patch("/tasks/:taskId", authenticateUser);
 app.patch("/tasks/:taskId", async (req, res) => {
 	const { taskId } = req.params;
