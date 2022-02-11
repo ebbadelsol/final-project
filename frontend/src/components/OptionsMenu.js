@@ -37,18 +37,10 @@ export const OptionsMenu = ({ accessToken, taskId }) => {
 	return (
 		<>
 			<MenuOptions>
-				<button
-					onClick={() => dispatch(onDeleteTask(accessToken, taskId))}
-					aria-label="Delete task"
-				>
+				<button onClick={() => dispatch(onDeleteTask(accessToken, taskId))}>
 					Delete
 				</button>
-				<button
-					onClick={() => setIsEditOpen(!isEditOpen)}
-					aria-label="Delete task"
-				>
-					Edit
-				</button>
+				<button onClick={() => setIsEditOpen(!isEditOpen)}>Edit</button>
 			</MenuOptions>
 			{isEditOpen && (
 				<AddTask
@@ -56,6 +48,8 @@ export const OptionsMenu = ({ accessToken, taskId }) => {
 					taskId={taskId}
 					headline={"Change your task"}
 					buttonText={"Change task"}
+					isOpen={isEditOpen}
+					setIsOpen={setIsEditOpen}
 				/>
 			)}
 		</>
