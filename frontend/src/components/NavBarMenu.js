@@ -51,13 +51,9 @@ const NavBar = styled.nav`
 	> button {
 		justify-content: end;
 	}
-
-	/* > *:last-child {
-		border-bottom: var(--borderGreyLight);
-	} */
 `;
 
-export const Menu = () => {
+export const NavBarMenu = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	return (

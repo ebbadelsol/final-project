@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Counter } from "./Counter";
 import { HeadlinePrimary } from "./Headlines";
 import { Color } from "./colors/Color";
-import { Menu } from "./Menu";
+import { NavBarMenu } from "./NavBarMenu";
 
 const HeaderSection = styled.header`
 	background-color: var(--primaryColor);
@@ -27,7 +27,7 @@ export const Header = () => {
 				<HeadlinePrimary color={Color.WHITE}>My tasks</HeadlinePrimary>
 				<Counter />
 			</div>
-			<Menu />
+			<NavBarMenu />
 		</HeaderSection>
 	);
 };
