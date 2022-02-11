@@ -42,9 +42,6 @@ export const SingleTask = ({ item }) => {
 
 	return (
 		<SingleTaskElement key={item._id}>
-			{isOptionsOpen && (
-				<OptionsMenu accessToken={accessToken} taskId={item._id} />
-			)}
 			<Checkbox
 				type="checkbox"
 				name={item._id}
@@ -77,6 +74,9 @@ export const SingleTask = ({ item }) => {
 					<Icons.More size="1em" color={Color.GREY} />
 				)}
 			</SmallButton>
+			{isOptionsOpen && (
+				<OptionsMenu accessToken={accessToken} taskId={item._id} />
+			)}
 		</SingleTaskElement>
 	);
 };
