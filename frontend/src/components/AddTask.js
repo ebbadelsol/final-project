@@ -58,6 +58,8 @@ export const AddTask = ({
 	setIsAddTaskOpen,
 	isAddTaskOpen,
 	taskId,
+	headline,
+	buttonText,
 }) => {
 	const accessToken = useSelector((store) => store.user.accessToken);
 	const userId = useSelector((store) => store.user.userId);
@@ -92,9 +94,7 @@ export const AddTask = ({
 	return (
 		<Background>
 			<AddTaskContainer>
-				<HeadlinePrimary marginBottom="0.75rem">
-					What are you planning?
-				</HeadlinePrimary>
+				<HeadlinePrimary marginBottom="0.75rem">{headline}</HeadlinePrimary>
 				<input
 					type="text"
 					value={taskInput}
@@ -128,7 +128,7 @@ export const AddTask = ({
 					onClick={handleClick}
 					backgroundColor={Color.PRIMARY_COLOR}
 				>
-					<ParagraphPrimary color={Color.WHITE}>Create task</ParagraphPrimary>
+					<ParagraphPrimary color={Color.WHITE}>{buttonText}</ParagraphPrimary>
 				</SquareButton>
 			</AddTaskContainer>
 		</Background>

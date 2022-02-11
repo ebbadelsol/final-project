@@ -187,6 +187,8 @@ export const TasksPage = () => {
 								fetchFunction={onCreateTask}
 								setIsAddTaskOpen={setIsAddTaskOpen}
 								isAddTaskOpen={isAddTaskOpen}
+								headline={"What are you planning?"}
+								buttonText={"Create task"}
 							/>
 						)}
 					</Container>

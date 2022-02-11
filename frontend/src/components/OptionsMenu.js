@@ -36,7 +36,14 @@ export const OptionsMenu = ({ accessToken, taskId }) => {
 					Edit
 				</button>
 			</MenuOptions>
-			{isEditOpen && <AddTask fetchFunction={onUpdateTask} taskId={taskId} />}
+			{isEditOpen && (
+				<AddTask
+					fetchFunction={onUpdateTask}
+					taskId={taskId}
+					headline={"Change your task"}
+					buttonText={"Change task"}
+				/>
+			)}
 		</>
 	);
 };
