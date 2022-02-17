@@ -39,8 +39,6 @@ code {
 		"Courier New", monospace;
 }
 
-/* Remove some of the button styles from the base */
-
 button {
 	display: flex;
 	justify-content: center;
