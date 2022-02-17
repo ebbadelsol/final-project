@@ -26,7 +26,7 @@ const Background = styled.div`
 	}
 `;
 
-const AddTaskContainer = styled.div`
+const Container = styled.div`
 	background-color: var(--white);
 	margin: 1.25rem 1.25rem 6.5rem;
 	padding: 2rem 2rem 3rem;
@@ -53,7 +53,7 @@ const DateButton = styled.button`
 	}
 `;
 
-export const AddTask = ({
+export const ManageTask = ({
 	fetchFunction,
 	setIsOpen,
 	isOpen,
@@ -93,7 +93,7 @@ export const AddTask = ({
 
 	return (
 		<Background>
-			<AddTaskContainer>
+			<Container>
 				<HeadlinePrimary marginBottom="0.75rem">{headline}</HeadlinePrimary>
 				<input
 					type="text"
@@ -130,7 +130,7 @@ export const AddTask = ({
 				>
 					<ParagraphPrimary color={Color.WHITE}>{buttonText}</ParagraphPrimary>
 				</SquareButton>
-			</AddTaskContainer>
+			</Container>
 		</Background>
 	);
 };

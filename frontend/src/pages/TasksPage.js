@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 
 import { Header } from "../components/Header";
 import { TaskList } from "../components/TaskList";
-import { AddTask } from "../components/AddTask";
+import { ManageTask } from "../components/ManageTask";
 import { LoadingIndicator } from "../components/LoadingIndicator";
 import { Icons } from "../components/icons/Icons";
 import { Color } from "../components/colors/Color";
@@ -183,7 +183,7 @@ export const TasksPage = () => {
 							)}
 						</BigButton>
 						{isAddTaskOpen && (
-							<AddTask
+							<ManageTask
 								fetchFunction={onCreateTask}
 								setIsOpen={setIsAddTaskOpen}
 								isOpen={isAddTaskOpen}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { AddTask } from "./AddTask";
+import { ManageTask } from "./ManageTask";
 import { onDeleteTask } from "../reducers/todos";
 import { onUpdateTask } from "../reducers/todos";
 
@@ -43,7 +43,7 @@ export const OptionsMenu = ({ accessToken, taskId }) => {
 				<button onClick={() => setIsEditOpen(!isEditOpen)}>Edit</button>
 			</MenuOptions>
 			{isEditOpen && (
-				<AddTask
+				<ManageTask
 					fetchFunction={onUpdateTask}
 					taskId={taskId}
 					headline={"Change your task"}
