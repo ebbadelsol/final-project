@@ -106,8 +106,8 @@ const authenticateUser = async (req, res, next) => {
 
 /************************** Routes **************************/
 
-app.get("/", (res) => {
-	res.send(listEndpoints(app)); // Delete listEndpoints?
+app.get("/", (req, res) => {
+	res.send(listEndpoints(app));
 });
 
 /************************** POST **************************/
