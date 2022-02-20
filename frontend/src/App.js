@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import thunkMiddleware from "redux-thunk";
 import {
 	combineReducers,
-	/*configureStore,*/ createStore,
+	createStore,
 	compose,
 	applyMiddleware,
 } from "@reduxjs/toolkit";
